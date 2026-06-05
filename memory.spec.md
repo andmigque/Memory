@@ -4,7 +4,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY in this document are t
 
 ## Scope
 
-This document defines the current requirements for Memory's core enum vocabulary and memory row shape.
+This document defines the current requirements for Memory: the enum vocabulary, the memory row shape, the `new_memory` RPC, the asynchronous embedding pipeline, the `invoke-memory-embedding` Edge Function, and the access control around them.
 
 ## Requirements
 
@@ -66,6 +66,46 @@ The `new_memory` function MUST rely on Postgres to populate `notes_fts`.
 
 Semantic search MUST only use rows where `embedding` is not null.
 
+The system MUST expose an Edge Function named `invoke-memory-embedding`.
+
+The `invoke-memory-embedding` Edge Function MUST support a `search_memory` action.
+
+The `invoke-memory-embedding` Edge Function MUST support an `update_memory_embedding_queue` action.
+
+The `invoke-memory-embedding` Edge Function MUST support a `set_memory_embedding` action.
+
+The `search_memory` action MUST generate an embedding for the incoming query.
+
+The `search_memory` action MUST call `search_memory` for hybrid search.
+
+The `search_memory` action MUST call `search_memory_embedding` for semantic-only search.
+
+The `update_memory_embedding_queue` action MUST call `get_memory_embedding_queue`.
+
+The `update_memory_embedding_queue` action MUST call `set_memory_embedding` for each queued memory row.
+
+The `set_memory_embedding` action MUST require `id` and `sentence`.
+
+The `set_memory_embedding` action MUST store one embedding for one memory row.
+
+The `invoke-memory-embedding` Edge Function MUST execute its database calls as the `service_role`.
+
+The `public`, `anon`, and `authenticated` roles MUST NOT execute `set_memory_embedding` directly.
+
+The `public`, `anon`, and `authenticated` roles MUST NOT execute `start_memory_embedding` directly.
+
+The `service_role` MUST be able to execute `set_memory_embedding`.
+
+The `service_role` MUST be able to execute `search_memory`, `search_memory_embedding`, and `get_memory_embedding_queue`.
+
+The `service_role` MUST be able to read rows from `public.memory`.
+
+The `service_role` MUST be able to update the `embedding` of an existing `public.memory` row.
+
+The `invoke-memory-embedding` Edge Function MUST reject any request whose `Authorization` bearer token is not the project service role key.
+
+The `start_memory_embedding` trigger MUST present the project service role key when it calls the `invoke-memory-embedding` Edge Function.
+
 ## New Memory Flow
 
 ```mermaid
@@ -73,18 +113,19 @@ sequenceDiagram
     participant Caller
     participant NewMemory as new_memory
     participant Postgres
-    participant Worker as Embedding Worker
+    participant Trigger as start_memory_embedding
+    participant Edge as invoke-memory-embedding
     participant Model as Embedding Model
 
     Caller->>NewMemory: entity, to_entity, relation, work, notes
     NewMemory->>Postgres: insert memory row
     Postgres-->>Postgres: generate id, epoch, notes_fts
-    Postgres-->>Worker: queue embedding work
-    Worker->>Postgres: load inserted memory row
-    Worker-->>Worker: render canonical memory sentence
-    Worker->>Model: embed canonical memory sentence
-    Model-->>Worker: embedding vector
-    Worker->>Postgres: store embedding vector
+    Postgres->>Trigger: AFTER INSERT fires
+    Trigger-->>Trigger: render canonical memory sentence
+    Trigger->>Edge: set_memory_embedding (id, sentence) with service role key
+    Edge->>Model: embed sentence
+    Model-->>Edge: embedding vector
+    Edge->>Postgres: store embedding vector
 ```
 
 The caller submits `entity`, `to_entity`, `relation`, `work`, and `notes`.
@@ -93,17 +134,56 @@ The `new_memory` function inserts the memory row immediately.
 
 Postgres generates `id`, `epoch`, and `notes_fts` during insert.
 
-After the memory row is inserted, the system queues semantic embedding asynchronously.
+After the row is inserted, the `start_memory_embedding` trigger fires.
 
-The embedding worker renders the canonical memory sentence from the inserted row.
+The trigger renders the canonical memory sentence with `convertto_memory_sentence`.
 
-The embedding worker sends the canonical memory sentence to an embedding model.
+The trigger calls the `invoke-memory-embedding` Edge Function with the row `id` and the rendered sentence, presenting the project service role key.
 
-The embedding worker stores the returned vector in the memory row's `embedding` column.
+The Edge Function embeds the sentence and stores the returned vector in the row's `embedding` column.
 
 The memory row is available for direct lookup and full-text search before embedding is complete.
 
 The memory row is available for semantic search after embedding is complete.
+
+## Invoke Memory Embedding Flow
+
+```mermaid
+sequenceDiagram
+    participant Caller
+    participant InvokeMemoryEmbedding as invoke-memory-embedding
+    participant Model as Embedding Model
+    participant Postgres
+
+    Caller->>InvokeMemoryEmbedding: search_memory query
+    InvokeMemoryEmbedding->>Model: embed query
+    Model-->>InvokeMemoryEmbedding: query embedding
+    InvokeMemoryEmbedding->>Postgres: search_memory or search_memory_embedding
+    Postgres-->>InvokeMemoryEmbedding: search results
+    InvokeMemoryEmbedding-->>Caller: results
+
+    Caller->>InvokeMemoryEmbedding: update_memory_embedding_queue
+    InvokeMemoryEmbedding->>Postgres: get_memory_embedding_queue
+    Postgres-->>InvokeMemoryEmbedding: id and sentence rows
+    loop each queued row
+        InvokeMemoryEmbedding->>Model: embed sentence
+        Model-->>InvokeMemoryEmbedding: memory embedding
+        InvokeMemoryEmbedding->>Postgres: set_memory_embedding
+    end
+
+    Caller->>InvokeMemoryEmbedding: set_memory_embedding id and sentence
+    InvokeMemoryEmbedding->>Model: embed sentence
+    Model-->>InvokeMemoryEmbedding: memory embedding
+    InvokeMemoryEmbedding->>Postgres: set_memory_embedding
+```
+
+The `invoke-memory-embedding` Edge Function owns semantic enrichment and semantic search request handling.
+
+The `search_memory` action embeds the query text before calling SQL search RPCs.
+
+The `update_memory_embedding_queue` action backfills memory rows whose embedding is still missing.
+
+The `set_memory_embedding` action embeds one supplied sentence and stores the returned vector for one memory row.
 
 ## Alternatives
 
@@ -174,3 +254,27 @@ Given a caller has `notes`,
 When `new_memory` is called,
 Then the caller does not provide `notes_fts`
 And Postgres generates `notes_fts` from `notes`.
+
+Given the `anon` role,
+When it calls `set_memory_embedding` directly,
+Then the call is denied.
+
+Given the `invoke-memory-embedding` Edge Function executing as the `service_role`,
+When it calls `set_memory_embedding` for an existing memory row,
+Then the call succeeds
+And the row's `embedding` is no longer null.
+
+Given a caller presenting the anon key as the `Authorization` bearer token,
+When it calls any `invoke-memory-embedding` action,
+Then the function responds 401
+And performs no action.
+
+Given a caller presenting the project service role key as the `Authorization` bearer token,
+When it calls the `search_memory` action,
+Then the function responds 200 with results.
+
+## Open Questions
+
+Is the `service_role` the write path for `new_memory`, requiring `INSERT` on `public.memory`,
+or is insertion reserved for `authenticated` callers? The embedding and search paths do not require
+`INSERT`; the current grant includes it.
