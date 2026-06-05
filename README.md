@@ -10,7 +10,7 @@ Memory is a supabase datastore that enables distributed agentic AI memory. It ex
 
 ## 🏗️ Architecture
 
-Memory holds the core skills and postgres sql scripts needs to create and use an agentic ai memory database. 
+Memory holds the core skills and postgres sql scripts needed to create and use an agentic ai memory database. 
 
 ```mermaid
 mindmap
