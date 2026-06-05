@@ -10,7 +10,7 @@
 
 ## 🏗️ Architecture
 
-Memory holds the core skills and postgres sql scripts needs to create and use a memory database. 
+Memory holds the core skills and postgres sql scripts needs to create and use an agentic ai memory database. 
 
 ```mermaid
 mindmap
