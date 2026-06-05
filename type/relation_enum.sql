@@ -46,5 +46,6 @@ CREATE TYPE public.relation_enum AS ENUM (
   'Receives',
   'Plans',
   'Feedback',
-  'Decides'
+  'Decides',
+  'GloriousFailures'
 );

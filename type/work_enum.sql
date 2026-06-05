@@ -21,5 +21,6 @@ CREATE TYPE public.work_enum AS ENUM (
   'UserExperience',
   'Prompt',
   'Memory',
-  'Test'
+  'Test',
+  'Cognition'
 );
