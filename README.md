@@ -1,6 +1,6 @@
 # 🤖🧠 Memory
 
-> **How does memory work?** Memory works by putting information into a specialiEd storage container optimized for retrieval.
+> **How does memory work?** Memory works by putting information into a specialized storage container optimized for retrieval.
 
 > **Agent Memory** A single entities memories that can be used to create dynamic system prompts and create warm starts each new session
 
