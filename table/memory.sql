@@ -29,7 +29,7 @@ create table public.memory (
   relation public.relation_enum not null,
   work public.work_enum not null,
   notes text not null,
-  notes_fts tsvector generated always as (to_tsvector('english', notes)) stored,
+  notes_fts tsvector generated always as (to_tsvector('english', notes)) stored not null,
   active boolean not null default true,
   epoch bigint not null default extract(epoch from now())::bigint,
   embedding extensions.vector(384) not null, 
