@@ -1,9 +1,9 @@
----- # embed_memory_on_insert
+---- # start_memory_embedding
 ----
 ---- > Trigger-only worker that queues one active memory row for embedding through the embed-memory Edge Function.
 ---- **Security**
 ---- > SECURITY DEFINER is required to read Vault and call pg_net from an insert trigger. Direct RPC execution is revoked from public, anon, and authenticated roles in the semantic-search migration.
-CREATE OR REPLACE FUNCTION public.embed_memory_on_insert()
+CREATE OR REPLACE FUNCTION public.start_memory_embedding()
  RETURNS trigger
  LANGUAGE plpgsql
  SECURITY DEFINER
@@ -25,8 +25,8 @@ begin
       ),
       body := jsonb_build_object(
         'action', 'embed_one',
-        'tickStamp', new.tick_stamp::text,
-        'sentence', public.memory_sentence(new.entity, new.relation, new.to_entity, new.work, new.notes)
+        'id', new.id,
+        'sentence', public.convertto_memory_sentence(new.entity, new.relation, new.to_entity, new.work, new.notes)
       )
     );
   end if;
@@ -34,3 +34,8 @@ begin
   return new;
 end;
 $function$;
+
+CREATE OR REPLACE TRIGGER start_memory_embedding_after_insert
+AFTER INSERT ON public.memory
+FOR EACH ROW
+EXECUTE FUNCTION public.start_memory_embedding();

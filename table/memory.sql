@@ -5,15 +5,15 @@
 ---- ### id
 ---- > Auto-generated primary key.
 ---- ### entity
----- > Actor recording the thought.
+---- > Actor recording the memory.
 ---- ### to_entity
 ---- > Target entity of the relation.
 ---- ### relation
 ---- > Verb describing the link from entity to to_entity.
 ---- ### work
----- > Project or stream the thought belongs to.
+---- > Project or stream the memory belongs to.
 ---- ### notes
----- > Free-form body text of the thought.
+---- > Free-form body text of the memory.
 ---- ### notes_fts
 ---- > Generated tsvector of notes for English full-text search.
 ---- ### active
@@ -32,7 +32,7 @@ create table public.memory (
   notes_fts tsvector generated always as (to_tsvector('english', notes)) stored not null,
   active boolean not null default true,
   epoch bigint not null default extract(epoch from now())::bigint,
-  embedding extensions.vector(384) not null, 
+  embedding extensions.vector(384) null,
   constraint memory_pkey primary key (id)
 ) TABLESPACE pg_default;
 

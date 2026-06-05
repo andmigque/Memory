@@ -1,4 +1,4 @@
----- # memory_sentence
+---- # convertto_memory_sentence
 ----
 ---- > Renders a memory row into the canonical sentence used for semantic embedding.
 ---- **Parameters**
@@ -9,7 +9,7 @@
 ---- - `text`: __p_notes__
 ---- **Returns**
 ---- - `text`: *entity relation target, work tag, and notes*
-CREATE OR REPLACE FUNCTION public.memory_sentence(p_entity entity_enum, p_relation relation_enum, p_to_entity entity_enum, p_work work_enum, p_notes text)
+CREATE OR REPLACE FUNCTION public.convertto_memory_sentence(p_entity entity_enum, p_relation relation_enum, p_to_entity entity_enum, p_work work_enum, p_notes text)
  RETURNS text
  LANGUAGE sql
  IMMUTABLE
