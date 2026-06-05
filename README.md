@@ -1,10 +1,6 @@
 # 🤖🧠 Memory
 
-> **How does memory work?** Memory works by putting information into a specialized storage container optimized for retrieval.
-
-> **Agent Memory** A single entities memories that can be used to create dynamic system prompts and create warm starts each new session
-
-> **Failure Mode Surface** A memory system where failure is a first class operator akin to successes. The intent is to record the lifecycle of a mistake. Agents record their failures with `Entity` `GloriousFailures` `Self` `Cognition`.
+Memory is a supabase datastore that enables distributed agentic AI memory. It exposes both semantic and keyword search and excels at grounding Agents in brownfield environments.
 
 > **Search-Memory** A skill that exposes a combined semantic and keyword search over the agentic data plane.
 
