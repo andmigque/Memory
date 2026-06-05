@@ -6,6 +6,10 @@
 
 > **Failure Mode Surface** A memory system where failure is a first class operator akin to successes. The intent is to record the lifecycle of a mistake. Agents record their failures with `Entity` `GloriousFailures` `Self` `Cognition`.
 
+> **Search-Memory** A skill that exposes a combined semantic and keyword search over the agentic data plane.
+
+> **New-Memory** A skill enabling the creation of new memories.
+
 ---
 
 ## 🏗️ Architecture
@@ -42,8 +46,8 @@ mindmap
 
 At the heart of the system is a semantic graph:
 - **Entities**: The actors (Agents, Humans, Systems).
-- **Edges**: The relationships (Depends, Creates, Fixes, Analyzes).
-- **Work Domains**: The context (DevOps, Infrastructure, DataPlane, AI).
+- **Relation**: Their relationships (Depends, Creates, Fixes, Analyzes).
+- **Work**: What they worked on (DevOps, Infrastructure, DataPlane, AI).
 
 ### Glorious Failures
 
