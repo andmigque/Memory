@@ -1,8 +1,8 @@
 ---- # start_memory_embedding
 ----
----- > Trigger-only worker that queues one active memory row for embedding through the invoke-memory-embedding Edge Function.
+---- > Trigger-only worker that queues one active memory row for embedding through the update-memory Edge Function.
 ---- **Security**
----- > SECURITY DEFINER is required to read Vault and call pg_net from an insert trigger. The project URL and service role key are read from Vault (`SUPABASE_URL_DEV`, `SUPABASE_SERVICE_ROLE_KEY_DEV`) so nothing is hardcoded; these are the same names the client uses. The Edge Function gates on the service role key. Direct RPC execution is revoked from public, anon, and authenticated roles in grant_memory_access.sql.
+---- > SECURITY DEFINER is required to read Vault and call pg_net from an insert trigger. The project URL and the secret API key are read from Vault (`SUPABASE_URL_DEV`, `SUPABASE_SECRET_KEY_DEV`) so nothing is hardcoded. The secret key is sent on the `apikey` header, never `Authorization` -- the new Supabase secret keys are not JWTs. update-memory authorizes on that key and runs as service_role.
 CREATE OR REPLACE FUNCTION public.start_memory_embedding()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -11,22 +11,22 @@ CREATE OR REPLACE FUNCTION public.start_memory_embedding()
 AS $function$
 declare
   supabase_url text;
-  service_role_key text;
+  secret_key text;
 begin
   if new.active then
     select decrypted_secret into supabase_url
     from vault.decrypted_secrets
     where name = 'SUPABASE_URL_DEV';
 
-    select decrypted_secret into service_role_key
+    select decrypted_secret into secret_key
     from vault.decrypted_secrets
-    where name = 'SUPABASE_SERVICE_ROLE_KEY_DEV';
+    where name = 'SUPABASE_SECRET_KEY_DEV';
 
     perform net.http_post(
-      url := supabase_url || '/functions/v1/invoke-memory-embedding',
+      url := supabase_url || '/functions/v1/update-memory',
       headers := jsonb_build_object(
         'Content-Type', 'application/json',
-        'Authorization', 'Bearer ' || service_role_key
+        'apikey', secret_key
       ),
       body := jsonb_build_object(
         'action', 'set_memory_embedding',

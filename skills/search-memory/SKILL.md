@@ -22,10 +22,11 @@ Search-Memory -Query 'how does embedding trigger authentication'
 The function ships with this skill in `./scripts/Search-Memory.ps1`. It takes one parameter, `-Query`,
 and returns the matching rows, best match first. Each row has `score`, `id`, `entity`, `work`, and `notes`.
 
-It needs two environment variables. Without them the call throws.
+It needs these environment variables. Without them the call throws.
 
 - `SUPABASE_URL_DEV` is the project URL.
-- `SUPABASE_SERVICE_ROLE_KEY_DEV` is the service role key.
+- `SUPABASE_PUBLISHABLE` is the publishable key.
+- `AGENT_SUPABASE_MEMORY_EMAIL` and `AGENT_SUPABASE_MEMORY_SECRET` are this agent's Supabase Auth login.
 
 ---
 
@@ -72,14 +73,14 @@ scores low, even when those exact words sit in a row. Keywords are not the tool.
 
 ## 5. 🔑 _Auth_
 
-> The function is private. It sends the service role key on every call.
+> You search as yourself. The script signs in to Supabase Auth and runs under your own identity.
 
 ##### 5.1 __Do This__
-- Let the function read the key from `$env:SUPABASE_SERVICE_ROLE_KEY_DEV`.
+- The script signs in with `AGENT_SUPABASE_MEMORY_EMAIL` and `AGENT_SUPABASE_MEMORY_SECRET`, then sends the publishable key plus your user JWT. RLS scopes what you can read.
 
 ##### 5.2 __Do Not Do This__
-- Use the publishable key. It is not a JWT, so the call returns 401.
-- Write the URL or the key into a file. Read both from the environment.
+- Use the service role key. The client never holds it.
+- Write any key into a file. Read them all from the environment.
 
 ---
 
