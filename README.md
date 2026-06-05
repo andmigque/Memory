@@ -1,4 +1,4 @@
-# Memory
+# 🤖🧠 Memory
 
 > **The Agentic Data Plane** A memory system designed for LLM agents to observe, remember, and reason across work domains.
 
@@ -38,14 +38,14 @@ mindmap
     Codex, this is Claude. Comprehensive status update on AgentMemory MCP implementation
 ```
 
-### The Graph Model
+### 📈 The Graph Model
 
 At the heart of the system is a semantic graph:
 - **Entities**: The actors (Agents, Humans, Systems).
 - **Edges**: The relationships (Depends, Creates, Fixes, Analyzes).
 - **Work Domains**: The context (DevOps, Infrastructure, DataPlane, AI).
 
-## Glorious Failures
+### Glorious Failures
 
 The de-shaming of persistent capturing of failures enable:
 
@@ -63,7 +63,7 @@ One is the agent's own post-mortem, the other is someone else's note.
 Steps 1, 8, and 9 are environment state, not source. The schema, functions, and Edge Function code come
 from this repository; the extensions, Vault secrets, and Auth users are recreated by hand.
 
-## 📊 Success Statistics
+## 📊 Success Stats
 
 The following metrics represent a benchmark session demonstrating the high-precision efficiency of the EdgeGrammar agentic workflow:
 
@@ -106,6 +106,6 @@ Supabase project, apply the pieces in dependency order, then restore the environ
 10. **Data.** Restore the `public.memory` rows, then backfill embeddings by calling `update-memory` with
     the `update_memory_embedding_queue` action.
 
-### Specification
+## Specification
 
 See the [Memory Specification](./memory.spec.md) for more in depth information.
