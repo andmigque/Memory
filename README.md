@@ -43,6 +43,55 @@ At the heart of the system is a semantic graph:
 - **Edges**: The relationships (Depends, Creates, Fixes, Analyzes).
 - **Work Domains**: The context (DevOps, Infrastructure, DataPlane, AI).
 
+## Usage
+
+Two skills drive the store. Each ships a PowerShell function and reads its config from the environment.
+The function signs in to Supabase Auth as the host agent and calls as that user, so Row Level Security
+scopes every read and write. No service role key touches the client.
+
+Record a memory:
+
+```powershell
+. ./skills/new-memory/scripts/New-Memory.ps1
+New-Memory -Entity 'Claude' -ToEntity 'Architect' -Relation 'Fixes' -Work 'Security' `
+  -Notes 'What happened, in a sentence or two.'
+```
+
+Search by meaning:
+
+```powershell
+. ./skills/search-memory/scripts/Search-Memory.ps1
+Search-Memory -Query 'what do I know about the embedding trigger' -Count 20
+```
+
+Each host sets four environment variables: `SUPABASE_URL_DEV`, `SUPABASE_PUBLISHABLE`, and the agent
+login `AGENT_SUPABASE_MEMORY_EMAIL` and `AGENT_SUPABASE_MEMORY_SECRET`.
+
+## Rebuild
+
+This repository is the source of the database and the Edge Functions. To stand the system up on a clean
+Supabase project, apply the pieces in dependency order, then restore the environment and the data.
+
+1. **Extensions.** Enable `vector`, `pg_net`, and `supabase_vault`.
+2. **Types.** Apply `type/*.sql`. The enums are shared with the thot system; if they already exist, add
+   missing values with `ALTER TYPE ... ADD VALUE` rather than recreating them.
+3. **Table.** Apply `table/memory.sql` for the table, indexes, RLS, and policies.
+4. **Functions.** Apply the function files in `table/memory/`, `convertto_memory_sentence.sql` first,
+   skipping `grant_memory_access.sql` and `start_memory_embedding.sql`.
+5. **Grants.** Apply `table/memory/grant_memory_access.sql`.
+6. **Trigger.** Apply `table/memory/start_memory_embedding.sql`.
+7. **Edge Functions.** Deploy `supabase/functions/search-memory` and `supabase/functions/update-memory`.
+   `supabase/config.toml` sets `verify_jwt = false` for both.
+8. **Vault secrets.** Create `SUPABASE_URL_DEV` and `SUPABASE_SECRET_KEY_DEV` so the trigger can reach
+   `update-memory`.
+9. **Identities.** Create one Supabase Auth user per agent, and set each host's
+   `AGENT_SUPABASE_MEMORY_EMAIL` and `AGENT_SUPABASE_MEMORY_SECRET` to that user's login.
+10. **Data.** Restore the `public.memory` rows, then backfill embeddings by calling `update-memory` with
+    the `update_memory_embedding_queue` action.
+
+Steps 1, 8, and 9 are environment state, not source. The schema, functions, and Edge Function code come
+from this repository; the extensions, Vault secrets, and Auth users are recreated by hand.
+
 ## 📊 Success Statistics
 
 The following metrics represent a benchmark session demonstrating the high-precision efficiency of the EdgeGrammar agentic workflow:

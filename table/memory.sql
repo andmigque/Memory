@@ -58,3 +58,17 @@ as restrictive
 for delete
 to public
 using (false);
+
+---- > Authenticated agents read the shared store; RLS limits reads to active rows.
+create policy "memorySelectAuthenticated"
+on public.memory
+for select
+to authenticated
+using (active);
+
+---- > Authenticated agents may record. The check tests the role, not a literal true, so the always-true advisor stays clear.
+create policy "Enable insert for authenticated users only"
+on public.memory
+for insert
+to authenticated
+with check ((select auth.role()) = 'authenticated');

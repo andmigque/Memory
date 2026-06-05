@@ -1,0 +1,9 @@
+# Edge Function deploy config. Both functions do their own authorization, so the platform JWT
+# gate is off: search-memory forwards the caller's user JWT and runs under RLS; update-memory
+# authorizes on the project secret key presented on the apikey header.
+
+[functions.search-memory]
+verify_jwt = false
+
+[functions.update-memory]
+verify_jwt = false
