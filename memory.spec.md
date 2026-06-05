@@ -209,6 +209,22 @@ This alternative is not preferred because a placeholder vector makes invalid sem
 
 This alternative is not preferred because semantic search would need to detect and ignore placeholder embeddings.
 
+## Deployment
+
+These are the conditions a valid deployment satisfies. The ordered, click-by-click procedure lives in the project README; this section states what MUST hold, not the steps.
+
+The system MUST enable the `vector`, `pg_net`, and `supabase_vault` extensions.
+
+The `entity_enum`, `relation_enum`, and `work_enum` types are shared with the thot system. Deployment MUST add missing values with `ALTER TYPE ... ADD VALUE` rather than recreate the types when they already exist.
+
+The SQL objects MUST be applied in dependency order: types, then the table and its policies, then the functions, then the grants, then the trigger.
+
+The `search-memory` and `update-memory` Edge Functions MUST be deployed with `verify_jwt` disabled, because each function authorizes its own caller.
+
+The Vault MUST hold the project URL and the project secret key that the `start_memory_embedding` trigger reads.
+
+After data is restored, embeddings for rows where `embedding` is null MUST be backfilled through the `update-memory` `update_memory_embedding_queue` action.
+
 ## Acceptance Criteria
 
 Given the `public.memory` table definition,
