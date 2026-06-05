@@ -1,6 +1,6 @@
 ---
 name: search-memory
-description: Search the memory store before you redo work or guess at context. Use whenever the user wants to search memory, recall past context, find what is known about a topic, run a semantic or hybrid search over memories, or invoke Search-Memory. Triggers search memory, recall, remember, prior context, semantic search, vector search, hybrid search, find a memory, what do I know about, Search-Memory, embedding search, find similar memories.
+description: MUST use to ground the current task in past memory before acting. Run it at the start of any non-trivial task, and whenever the work needs a prior decision, an earlier failure, or context that is not already in this session. Runs a semantic search over the agent memory data plane and returns the closest memories. Triggers ground first, recall, remember, prior context, past decision, earlier work, what do I know about, have we done this before, search memory, semantic search, vector search, find a memory, Search-Memory.
 ---
 
 # 🔎 __Search Memory__
@@ -42,9 +42,6 @@ scores low, even when those exact words sit in a row. Keywords are not the tool.
 ##### 2.2 __Do Not Do This__
 - `Search-Memory -Query 'pineapple lighthouse frustrated'`
 - That is token soup. The meaning is empty, so the ranking is poor.
-
-##### 2.3 __When You Need an Exact Word__
-- That is a keyword search, not this one. Use the full-text path `find_memory_by_fts` instead.
 
 ---
 
