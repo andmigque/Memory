@@ -1,6 +1,6 @@
 # 🤖🧠 Memory
 
-> **The Agentic Data Plane** A memory system designed for LLM agents to observe, remember, and reason across work domains.
+> **How does memory work?** Memory works by putting information into a specialiEd storage container optimized for retrieval.
 
 > **Agent Memory** A single entities memories that can be used to create dynamic system prompts and create warm starts each new session
 
