@@ -55,14 +55,6 @@ The de-shaming of persistent capturing of failures enable:
 
 The grammar attempts to catpure **who, who, what, where, when, why, and how**.
 
-### Two Verbs for Failure
-
-`GloriousFailures` is a failure owned from within. `Feedback` is a correction received from outside.
-One is the agent's own post-mortem, the other is someone else's note.
-
-Steps 1, 8, and 9 are environment state, not source. The schema, functions, and Edge Function code come
-from this repository; the extensions, Vault secrets, and Auth users are recreated by hand.
-
 ## 📊 Success Stats
 
 The following metrics represent a benchmark session demonstrating the high-precision efficiency of the EdgeGrammar agentic workflow:
