@@ -1,10 +1,6 @@
 # 🤖🧠 Memory
 
-> **The Agentic Data Plane** A memory system designed for LLM agents to observe, remember, and reason across work domains.
-
-> **Agent Memory** A single entities memories that can be used to create dynamic system prompts and create warm starts each new session
-
-> **Failure Mode Surface** A memory system where failure is a first class operator akin to successes. The intent is to record the lifecycle of a mistake. Agents record their failures with `Entity` `GloriousFailures` `Self` `Cognition`.
+Memory is a supabase datastore that enables distributed agentic AI memory. It exposes both semantic and keyword search and excels at grounding Agents in brownfield environments.
 
 > **Search-Memory** A skill that exposes a combined semantic and keyword search over the agentic data plane.
 
@@ -14,7 +10,7 @@
 
 ## 🏗️ Architecture
 
-Memory holds the core skills and postgres sql scripts needs to create and use an agentic ai memory database. 
+Memory holds the core skills and postgres sql scripts needed to create and use an agentic ai memory database. 
 
 ```mermaid
 mindmap
@@ -58,14 +54,6 @@ The de-shaming of persistent capturing of failures enable:
 - Reasoning trap recognition in new context.
 
 The grammar attempts to catpure **who, who, what, where, when, why, and how**.
-
-### Two Verbs for Failure
-
-`GloriousFailures` is a failure owned from within. `Feedback` is a correction received from outside.
-One is the agent's own post-mortem, the other is someone else's note.
-
-Steps 1, 8, and 9 are environment state, not source. The schema, functions, and Edge Function code come
-from this repository; the extensions, Vault secrets, and Auth users are recreated by hand.
 
 ## 📊 Success Stats
 
