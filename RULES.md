@@ -7,6 +7,14 @@ search, an async embedding trigger, and one Edge Function. `memory.spec.md` is t
 
 ## Rules
 
+0. **Code Bot owns the coding posture.** Use `/code-bot` for source changes, code review,
+   style decisions, naming decisions, pattern choices, and maintainability work. Preserve
+   its invariants: readability first, no null machinery, no underscore-prefixed privates,
+   self-qualified class member access, Pascal public surfaces, camel internal names, and
+   syntax-forced media in their native idioms.
+   Violated when: code is changed without applying Code Bot, or a local style edit weakens
+   those invariants without an explicit Architect override.
+
 1. **`memory.spec.md` is the source of truth; reconcile spec and code in the same change.**
    Violated when: SQL or the Edge Function changes behavior without the matching edit to `memory.spec.md`.
 
