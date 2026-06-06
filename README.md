@@ -101,14 +101,20 @@ Supabase project, apply the pieces in dependency order, then restore the environ
    skipping `grant_memory_access.sql` and `start_memory_embedding.sql`.
 5. **Grants.** Apply `table/memory/grant_memory_access.sql`.
 6. **Trigger.** Apply `table/memory/start_memory_embedding.sql`.
-7. **Edge Functions.** Deploy `supabase/functions/search-memory` and `supabase/functions/update-memory`.
-   `supabase/config.toml` sets `verify_jwt = false` for both.
+7. **Edge Functions.** Deploy `supabase/functions/search-memory`, `supabase/functions/get-memory`, and
+   `supabase/functions/update-memory`. `supabase/config.toml` sets `verify_jwt = false` for all three.
 8. **Vault secrets.** Create `SUPABASE_URL_DEV` and `SUPABASE_SECRET_KEY_DEV` so the trigger can reach
    `update-memory`.
 9. **Identities.** Create one Supabase Auth user per agent, and set each host's
    `AGENT_SUPABASE_MEMORY_EMAIL` and `AGENT_SUPABASE_MEMORY_SECRET` to that user's login.
 10. **Data.** Restore the `public.memory` rows, then backfill embeddings by calling `update-memory` with
     the `update_memory_embedding_queue` action.
+11. **Skills.** Run `deploy_skills.ps1` to publish the `search-memory`, `new-memory`, and `get-memory`
+    skills, then dot-source their scripts in the pwsh profile so the functions and the `SUPABASE_*` /
+    `AGENT_*` env load per session.
+12. **SessionStart hook.** Copy `hooks/claude/session_start.ps1` to `~/.claude/hooks/`. The SessionStart
+    command in `~/.claude/settings.json` runs it without `-NoProfile`, so the profile loads `Get-Memory`
+    and the hook grounds each session in the latest memories.
 
 ## Specification
 

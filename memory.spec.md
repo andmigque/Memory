@@ -4,7 +4,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY in this document are t
 
 ## Scope
 
-This document defines the current requirements for Memory: the enum vocabulary, the memory row shape, the `new_memory` RPC, the asynchronous embedding pipeline, the `invoke-memory-embedding` Edge Function, and the access control around them.
+This document defines the current requirements for Memory: the enum vocabulary, the memory row shape, the `new_memory` RPC, the `get_memory` retrieval RPC, the asynchronous embedding pipeline, the `update-memory` Edge Function, and the access control around them.
 
 ## Requirements
 
@@ -64,6 +64,22 @@ The `new_memory` function MUST NOT accept `notes_fts` as an input value.
 
 The `new_memory` function MUST rely on Postgres to populate `notes_fts`.
 
+The system MUST expose an RPC function named `get_memory` for reading recorded memory rows.
+
+The `get_memory` function MUST accept an optional entity filter and an optional row limit.
+
+The `get_memory` function MUST default the entity filter to null and return rows for every entity when no entity is given.
+
+The `get_memory` function MUST default the row limit to 10.
+
+The `get_memory` function MUST return only rows where `active` is true.
+
+The `get_memory` function MUST order rows by `epoch` descending, then `id` descending, so the newest memory is the first row.
+
+The `get_memory` function MUST return each row's `id`, `epoch`, `entity`, `to_entity`, `relation`, `work`, `notes`, and `active` values.
+
+The `get_memory` function MUST run as the calling role so Row Level Security gates which rows it returns.
+
 Semantic search MUST only use rows where `embedding` is not null.
 
 The system MUST identify each calling agent as a Supabase Auth user.
@@ -82,6 +98,14 @@ The `search-memory` Edge Function MUST call `search_memory` for hybrid search.
 
 The `search-memory` Edge Function MUST call `search_memory_embedding` for semantic-only search.
 
+The system MUST expose a user-facing Edge Function named `get-memory`.
+
+The `get-memory` Edge Function MUST run as the calling user by forwarding the caller's JWT to PostgREST.
+
+The `get-memory` Edge Function MUST call `get_memory` for direct retrieval.
+
+The `get-memory` Edge Function MUST accept an optional entity and an optional limit and forward them to `get_memory`.
+
 The system MUST expose an internal Edge Function named `update-memory`.
 
 The `update-memory` Edge Function MUST authorize the caller by the project secret key presented on the `apikey` header.
@@ -94,7 +118,7 @@ The `update-memory` Edge Function MUST support an `update_memory_embedding_queue
 
 Row Level Security MUST gate which rows the `authenticated` role can read and insert.
 
-The `authenticated` role MUST be able to execute `new_memory`, `search_memory`, and `search_memory_embedding`.
+The `authenticated` role MUST be able to execute `new_memory`, `get_memory`, `search_memory`, and `search_memory_embedding`.
 
 The `public` and `anon` roles MUST NOT read or write `public.memory`.
 
@@ -141,6 +165,33 @@ The Edge Function embeds the sentence and stores the returned vector in the row'
 The memory row is available for direct lookup and full-text search before embedding is complete.
 
 The memory row is available for semantic search after embedding is complete.
+
+## Get Memory Flow
+
+```mermaid
+sequenceDiagram
+    participant Agent
+    participant Auth as Supabase Auth
+    participant GetMemory as get-memory
+    participant Postgres
+
+    Agent->>Auth: sign in (email, secret)
+    Auth-->>Agent: user JWT
+    Agent->>GetMemory: entity (optional), limit (optional), publishable key on apikey + user JWT
+    GetMemory->>Postgres: get_memory as the caller
+    Postgres-->>GetMemory: active rows the caller may read under RLS, newest first
+    GetMemory-->>Agent: id, epoch, entity, to_entity, relation, work, notes, active
+```
+
+The `get-memory` Edge Function owns direct retrieval. It runs as the calling user by forwarding the user JWT, so Row Level Security decides which rows it returns. It calls `get_memory`, which reads recorded memory rows separate from full-text and semantic search.
+
+The caller MAY pass an entity to scope the read to one recording actor, or omit it to read across every entity.
+
+The caller MAY pass a limit, or omit it to take the default of 10.
+
+`get_memory` returns only rows where `active` is true, ordered newest first by `epoch` then `id`.
+
+Because the newest recorded memory is the first row returned, `get-memory` with no arguments is the grounding read for the latest activity across all entities.
 
 ## Search Flow
 
@@ -219,7 +270,7 @@ The `entity_enum`, `relation_enum`, and `work_enum` types are shared with the th
 
 The SQL objects MUST be applied in dependency order: types, then the table and its policies, then the functions, then the grants, then the trigger.
 
-The `search-memory` and `update-memory` Edge Functions MUST be deployed with `verify_jwt` disabled, because each function authorizes its own caller.
+The `search-memory`, `get-memory`, and `update-memory` Edge Functions MUST be deployed with `verify_jwt` disabled, because each function authorizes its own caller.
 
 The Vault MUST hold the project URL and the project secret key that the `start_memory_embedding` trigger reads.
 
@@ -289,3 +340,24 @@ Given a caller that does not present the project secret key,
 When it calls `update-memory`,
 Then the function responds 401
 And performs no action.
+
+Given no arguments,
+When `get_memory` is called,
+Then it returns the most recent rows the caller may read under Row Level Security
+And the rows are ordered newest first
+And at most 10 rows are returned.
+
+Given an entity argument,
+When `get_memory` is called,
+Then it returns only rows recorded by that entity
+And only rows where `active` is true.
+
+Given a signed-in agent presenting the publishable key and its user JWT,
+When it calls `get_memory`,
+Then the function runs under the `authenticated` role
+And returns only rows the user may read under Row Level Security.
+
+Given a signed-in agent presenting the publishable key and its user JWT,
+When it calls the `get-memory` Edge Function with no arguments,
+Then the function runs as that user
+And returns at most 10 rows the user may read under Row Level Security, newest first.

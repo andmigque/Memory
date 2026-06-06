@@ -10,6 +10,7 @@
 GRANT EXECUTE ON FUNCTION public.new_memory(entity_enum, entity_enum, relation_enum, work_enum, text) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.search_memory(text, extensions.vector, integer, integer) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.search_memory_embedding(extensions.vector, real, integer) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.get_memory(entity_enum, integer) TO authenticated;
 GRANT SELECT, INSERT ON public.memory TO authenticated;
 GRANT USAGE, SELECT ON SEQUENCE public.memory_id_seq TO authenticated;
 

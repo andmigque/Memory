@@ -9,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "pwsh -NoProfile -File ~\\.claude\\hooks\\session_start.ps1\""
+            "command": "pwsh -File ~\\.claude\\hooks\\session_start.ps1"
           }
         ]
       }
