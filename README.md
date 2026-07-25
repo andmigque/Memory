@@ -74,7 +74,6 @@ The following uses the notes column to express the meaning of the chosen grammar
 | Codex |	Delivers | Architect |	Frontend |	A completed feature with verification and next steps |
 | Architect |	Documents |	Agent |	Protocol |	A durable rule future agents must follow |
 
-### 📊 The Continuity Loop
 
 ## 📊 Success Stats
 
