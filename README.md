@@ -21,6 +21,8 @@ Memory works and has been tested with:
 
 ## 🔎 Use Cases
 
+###  Display Agentic Working Relationships
+
 Memory is the bridge that connects agentic context across platforms and vendors and can be used as a shared operational history where agents:
 
 - search before acting
@@ -40,7 +42,7 @@ pie showData
     "Receives" : 71
 ```
 
-### 📊 Track What Your Agents Work On
+### 📊 Track What Was Worked On
 
 Because every memory is assigned to a work domain, Memory can reveal where agents are spending their effort across projects, disciplines, and recurring problem areas.
 
