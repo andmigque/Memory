@@ -1,6 +1,6 @@
 # 🤖🧠 Memory
 
-Memory is a datastore that enables continuous agentic improvement.
+Memory is a datastore that enables *__Continuous Agentic Improvement__*.
 
 > It exposes both semantic and keyword search and excels at grounding agents in brownfield environments.
 
