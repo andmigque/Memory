@@ -48,7 +48,7 @@ Because every memory is assigned to a work domain, Memory can reveal where agent
 
 ```mermaid
 xychart-beta
-    title "Most Active Memory Work Domains"
+    title "Most Active Work"
     x-axis ["Memory", "Security", "Plan", "Infra", "Cognition", "Frontend", "Feedback", "Prompt"]
     y-axis "Memories" 0 --> 160
     bar [156, 118, 106, 106, 95, 84, 67, 61]
