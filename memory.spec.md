@@ -2,7 +2,7 @@
 
 # 1. Normative Language
 
-> ## a. The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY are normative only when written in uppercase and are interpreted as described in RFC 2119 and RFC 8174.
+> ## a. Uppercase normative keywords are interpreted according to RFC 2119 and RFC 8174.
 
 # 2. Scope
 
@@ -31,14 +31,19 @@
 
 > ## a. Memory MUST use the following enum contracts.
 
-| Type | Purpose | Contract |
+| Type | Concern | Contract |
 | --- | --- | --- |
-| `entity_enum` | Identifies an actor or system | Values are case-sensitive on the wire |
-| `relation_enum` | Identifies the recorded action | Values MUST support the sentence shape `entity relation to_entity` and SHOULD be verbs |
-| `work_enum` | Identifies the work domain | Values MUST describe reusable work domains |
-| `invariant_enum` | Represents a non-negotiable operating rule | Values MUST read as directives |
-| `invariant_enum` | Represents a positive operating rule | Values MUST use the `DO_` prefix |
-| `invariant_enum` | Represents a negative operating rule | Values MUST use the `DO_NOT_` prefix |
+| `entity_enum` | Purpose | Identifies an actor or system |
+| `entity_enum` | Wire format | Values are case-sensitive |
+| `relation_enum` | Purpose | Identifies the recorded action |
+| `relation_enum` | Sentence shape | Values MUST support `entity relation to_entity` |
+| `relation_enum` | Grammar | Values SHOULD be verbs |
+| `work_enum` | Purpose | Identifies the work domain |
+| `work_enum` | Domain | Values MUST describe reusable work domains |
+| `invariant_enum` | Purpose | Represents a non-negotiable operating rule |
+| `invariant_enum` | Form | Values MUST read as directives |
+| `invariant_enum` | Positive form | Values MUST use the `DO_` prefix |
+| `invariant_enum` | Negative form | Values MUST use the `DO_NOT_` prefix |
 
 > ## b. Enum values MUST remain understandable without project-specific lore.
 
@@ -171,15 +176,19 @@
 
 > ## i. `update-memory` MUST authorize the project secret key from the `apikey` header.
 
-> ## j. `update-memory` MUST support a `set_memory_embedding` action requiring `id` and `sentence`.
+> ## j. `update-memory` MUST support the following action contract.
 
-> ## k. `update-memory` MUST support an `update_memory_embedding_queue` action that drains `get_memory_embedding_queue`.
+| Action | Input | Type | Required | Behavior |
+| --- | --- | --- | --- | --- |
+| `set_memory_embedding` | `id` | `bigint` | Yes | Identifies the memory row |
+| `set_memory_embedding` | `sentence` | `text` | Yes | Supplies the text to embed |
+| `update_memory_embedding_queue` | None | None | No | Drains `get_memory_embedding_queue` |
 
-> ## l. `update-memory` MUST respond with status 401 when the project secret key is absent or invalid.
+> ## k. `update-memory` MUST respond with status 401 when the project secret key is absent or invalid.
 
-> ## m. `update-memory` MUST perform no action when authorization fails.
+> ## l. `update-memory` MUST perform no action when authorization fails.
 
-> ## n. User-facing clients MUST NOT require the project secret key.
+> ## m. User-facing clients MUST NOT require the project secret key.
 
 # 9. Embedding Pipeline
 
@@ -276,6 +285,7 @@
 | Hybrid search | Call `search-memory` in hybrid mode | The function runs as the caller and returns only RLS-visible rows |
 | Semantic search | Search while a row has a null embedding | The row is excluded from semantic results |
 | Authorized embedding | Call `set_memory_embedding` through `update-memory` with the project secret key | The embedding is stored |
-| Unauthorized embedding | Call `update-memory` without the project secret key | The response is 401 and no write occurs |
-| Access control | Attempt an unauthenticated read or write | Row Level Security denies the operation |
+| Unauthorized embedding | Call `update-memory` without the project secret key | The result satisfies 8.k and 8.l |
+| Unauthenticated read | Attempt to read `memory` without authentication | Row Level Security denies the operation |
+| Unauthenticated write | Attempt to insert into `memory` without authentication | Row Level Security denies the operation |
 | Deployment | Inspect the deployed environment | The environment satisfies section 12 |
