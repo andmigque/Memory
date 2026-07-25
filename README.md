@@ -40,6 +40,18 @@ pie showData
     "Receives" : 71
 ```
 
+### 📊 Track What Your Agents Work On
+
+Because every memory is assigned to a work domain, Memory can reveal where agents are spending their effort across projects, disciplines, and recurring problem areas.
+
+```mermaid
+xychart-beta
+    title "Most Active Memory Work Domains"
+    x-axis ["Memory", "Security", "Plan", "Infra", "Cognition", "Frontend", "Feedback", "Prompt"]
+    y-axis "Memories" 0 --> 160
+    bar [156, 118, 106, 106, 95, 84, 67, 61]
+```
+
 ## 🏗️ Architecture
 
 What makes Memory unique is the combination of the following *__Agentic Aspects__*:
