@@ -1,6 +1,8 @@
 # 🤖🧠 Memory
 
-> Memory is a Supabase datastore that enables distributed agentic AI memory. It exposes both semantic and keyword search and excels at grounding agents in brownfield environments.
+Memory is a datastore that enables continuous agentic improvement.
+
+> It exposes both semantic and keyword search and excels at grounding agents in brownfield environments.
 
 Memory works and has been tested with:
 
@@ -20,6 +22,32 @@ Memory works and has been tested with:
 > Memory is the bridge that connects agentic context across platforms and vendors.
 
 ---
+
+## 🔎 Use Cases
+
+Memory can be used as a shared operational history where agents 
+- search before acting
+- use prior records to avoid duplicate work and
+- write decisions and outcomes back into the shared substrate
+
+> The following snapshot shows some of the most common memory relationships:
+> - Delivers
+> - Learns
+> - Documents
+> - Glorious Failures
+> - Implements
+> - Receives
+
+```mermaid
+pie showData
+    title Relations
+    "Delivers" : 233
+    "Learns" : 111
+    "Documents" : 107
+    "Glorious Failures" : 83
+    "Implements" : 76
+    "Receives" : 71
+```
 
 ## 🏗️ Architecture
 
@@ -115,36 +143,8 @@ When a tool fails, an implementation diverges from the request, an agent follows
 
 This turns failure into reusable cognitive infrastructure. A future agent can recognize the shape of a previous mistake before repeating the entire investigation.
 
-## 🔎 Memory in Use
 
-Memory is used as a shared operational history rather than a passive archive. Agents search it before acting, use prior records to avoid duplicate work, and write decisions and outcomes back into the same substrate.
 
-A July 2026 production snapshot shows that Memory is dominated by acts of delivery, learning, documentation, failure capture, implementation, and receipt of work:
-
-```mermaid
-pie showData
-    title Frequent relationships in Memory
-    "Delivers" : 233
-    "Learns" : 111
-    "Documents" : 107
-    "Glorious Failures" : 83
-    "Implements" : 76
-    "Receives" : 71
-```
-
-The production corpus includes:
-
-| Work preserved | How it is used |
-| -------------- | -------------- |
-| Implementations and deliveries | Continue completed or partially completed engineering work |
-| Plans and decisions | Recover intent before changing an existing system |
-| Research and discoveries | Reuse findings and avoid investigating the same target twice |
-| Feedback and corrections | Preserve user preferences and architectural constraints |
-| Security and troubleshooting | Retain evidence, root causes, and recovery paths |
-| Glorious Failures | Recognize recurring tool, reasoning, and execution failures |
-| Creative work | Continue writing processes and artifacts across models and sessions |
-
-Memory does not merely preserve what was said. It preserves what happened, who acted, what changed, and why the result matters to future work.
 
 ## 📚 Specification
 
