@@ -4,7 +4,7 @@ Memory is a datastore that enables continuous agentic improvement.
 
 > It exposes both semantic and keyword search and excels at grounding agents in brownfield environments.
 
-Memory works and has been tested with:
+Memory has been tested on the following platforms:
 
 - Claude
   - Web
