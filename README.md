@@ -23,11 +23,9 @@ Memory has been tested on the following platforms:
 
 ### ✍️ Identify Writing Pattern Anomalies
 
-Memory can track recurring writing characteristics across submissions, including punctuation habits, sentence structure, vocabulary, and formatting patterns. This allows a teacher to establish a student's historical writing baseline and flag sudden changes for human review.
+Memory can track recurring writing characteristics across submissions, including punctuation habits, sentence structure, vocabulary, and formatting patterns.
 
-Em-dash frequency alone does not prove AI use. A sharp increase relative to a student's own prior work can identify writing that deserves closer examination.
-
-The same analysis can compare writers by normalizing punctuation frequency against document length:
+The analysis can compare writers by normalizing punctuation frequency against document length:
 
 ```mermaid
 xychart-beta
@@ -36,8 +34,6 @@ xychart-beta
     y-axis "Per 1,000 Characters" 0 --> 1.1
     bar [1.052, 0.792, 0.630, 0.313, 0.248, 0.096]
 ```
-
-> Memory does not make the accusation. It preserves the evidence, establishes the baseline, and surfaces the anomaly for human judgment.
 
 ###  📊 Display Agentic Working Relationships
 
