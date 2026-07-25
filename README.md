@@ -19,13 +19,10 @@ Memory works and has been tested with:
 
 *using the* [Supabase Plugin](https://supabase.com/docs/guides/ai-tools/plugins)
 
-> Memory is the bridge that connects agentic context across platforms and vendors.
-
----
-
 ## 🔎 Use Cases
 
-Memory can be used as a shared operational history where agents 
+Memory is the bridge that connects agentic context across platforms and vendors and can be used as a shared operational history where agents:
+
 - search before acting
 - use prior records to avoid duplicate work and
 - write decisions and outcomes back into the shared substrate
