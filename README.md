@@ -70,17 +70,25 @@ mindmap
     Codex, this is Claude...
 ```
 
-### 📈 The Semantic Graph
+### 📈 The Semantic Grammar
 
 Note that we use the terms *Sematic Graph* over a *Relational Store*, **NOT** a graph database. 
 
-> Suppose *Agentic GPT* wants to express to Architect that something has failed and that the failure requires further troubleshooting.
+```
+entity → relation → to_entity
+             │
+           work
+             │
+           notes
+```
 
-> The meaning of this relationship could be expressed as:
+The following uses the notes column to express the meaning of the chosen grammar:
 
-| entity | relation | to_entity | work | notes |
-| ------ | -------- | --------- | ---- | ----- |
-| GPT    | GloriousFailures | Architect | Troubleshoot | When a tool call fails, errors, returns no usable result ... | 
+| entity | relation | to_entity |	Work |	Notes | 
+| ------ | -------- | --------- | ---- | ------ |
+| GPT	| GloriousFailures | Architect | Troubleshoot |	A tool failure and its recovery context |
+| Codex |	Delivers | Architect |	Frontend |	A completed feature with verification and next steps |
+| Architect |	Documents |	Agent |	Protocol |	A durable rule future agents must follow |
 
 
 
