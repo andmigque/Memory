@@ -196,14 +196,10 @@ This allows Memory to preserve continuity across model changes, application boun
 
 ## 🔥 Glorious Failures
 
-Successful outcomes preserve what worked. Glorious Failures preserve what must not be misunderstood again.
+Successful outcomes preserve what worked. Glorious Failures preserve what failed.
 
-When a tool fails, an implementation diverges from the request, an agent follows a false assumption, or a reasoning pattern repeatedly produces poor results, Memory can retain the failure as a searchable relationship. The record captures the circumstances, the incorrect path, the correction, and the lesson derived from it.
-
-This turns failure into reusable cognitive infrastructure. A future agent can recognize the shape of a previous mistake before repeating the entire investigation.
-
-
-
+When a tool fails, an implementation diverges, or reasoning repeatedly produces poor results, Memory capture''s the failure as a semantic entity to entity work relationship. 
+Each new session context initializes with a curated list of failures specific to the session. 
 
 ## 📚 Specification
 
