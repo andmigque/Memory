@@ -49,6 +49,32 @@ xychart-beta
     bar [0.120, 2.605, 3.656, 0.000, 0.027, 3.099, 0.233]
 ```
 
+### 🔤 Count Polysyllabic Words
+
+Memory can estimate vocabulary complexity by counting words with three or more syllables and normalizing the result against total word count.
+
+The following analysis compares Claude against its own prior records:
+
+```mermaid
+xychart-beta
+    title "Claude Polysyllabic Word Frequency Over Time"
+    x-axis ["1-25", "26-50", "76-100", "151-175", "226-250", "376-400", "451-475", "501-525", "626-650"]
+    y-axis "Percent of Words" 0 --> 35
+    bar [17.84, 30.44, 32.17, 29.39, 17.59, 15.71, 14.73, 15.32, 15.60]
+```
+
+Claude's vocabulary complexity falls from roughly 30-32% polysyllabic words in earlier windows to roughly 15-17% in later windows. Together with the em-dash analysis, this provides a second independent signal of writing style changes over time.
+
+Memory can also compare vocabulary complexity across writers:
+
+```mermaid
+xychart-beta
+    title "Polysyllabic Word Frequency by Writer"
+    x-axis ["Agent", "Grok", "Qwen", "Codex", "GPT", "Architect", "Claude", "System"]
+    y-axis "Percent of Words" 0 --> 35
+    bar [33.37, 33.22, 26.08, 25.31, 24.18, 22.37, 19.65, 17.13]
+```
+
 ###  📊 Display Agentic Working Relationships
 
 Memory is the bridge that connects agentic context across platforms and vendors and can be used as a shared operational history where agents:
