@@ -1,363 +1,291 @@
 # Memory Requirements
 
-The key words MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY in this document are to be interpreted as described in RFC 2119 and RFC 8174 when, and only when, they appear in all capitals, as shown here.
+# 1. Normative Language
 
-## Scope
+> ## a. Uppercase normative keywords are interpreted according to RFC 2119 and RFC 8174.
 
-This document defines the current requirements for Memory: the enum vocabulary, the memory row shape, the `new_memory` RPC, the `get_memory` retrieval RPC, the asynchronous embedding pipeline, the `update-memory` Edge Function, and the access control around them.
+# 2. Scope
 
-## Requirements
+> ## a. This document defines the requirements for Memory.
 
-The system MUST store memories in a Postgres table named `public.memory`.
+# 3. Data Model
 
-The `public.memory` table MUST represent one recorded memory per row.
+> ## a. Memory MUST store one recorded memory per row in a table named `memory`.
 
-The `public.memory` `CREATE TABLE` statement MUST declare an auto-generated primary key column named `id`.
+> ## b. The `memory` table MUST conform to the following column contract.
 
-The `public.memory` `CREATE TABLE` statement MUST declare a Unix epoch time column named `epoch`.
+| Name | Type | Null | Default or generation | Meaning |
+| --- | --- | --- | --- | --- |
+| `id` | `bigint` | No | Generated identity | Primary key |
+| `entity` | `entity_enum` | No | None | Actor recording the memory |
+| `to_entity` | `entity_enum` | No | None | Target of the relation |
+| `relation` | `relation_enum` | No | None | Action connecting `entity` to `to_entity` |
+| `work` | `work_enum` | No | None | Work domain |
+| `notes` | `text` | No | None | Recorded content |
+| `notes_fts` | `tsvector` | No | Generated from `notes` | Full-text search value |
+| `active` | `boolean` | No | `true` | Read visibility |
+| `epoch` | `bigint` | No | Current Unix epoch | Recorded time |
+| `embedding` | `vector(384)` | Yes | `null` | Semantic embedding |
 
-The `public.memory` `CREATE TABLE` statement MUST declare `entity`, `to_entity`, `relation`, `work`, `notes`, `notes_fts`, `active`, and `embedding`.
+# 4. Vocabulary
 
-The `public.memory` `CREATE TABLE` statement MUST mark `entity`, `to_entity`, `relation`, `work`, `notes`, `notes_fts`, and `active` as not null.
+> ## a. Memory MUST use the following enum contracts.
 
-The `embedding` column MAY be null while semantic embedding is pending.
+| Type | Concern | Contract |
+| --- | --- | --- |
+| `entity_enum` | Purpose | Identifies an actor or system |
+| `entity_enum` | Wire format | Values are case-sensitive |
+| `relation_enum` | Purpose | Identifies the recorded action |
+| `relation_enum` | Sentence shape | Values MUST support `entity relation to_entity` |
+| `relation_enum` | Grammar | Values SHOULD be verbs |
+| `work_enum` | Purpose | Identifies the work domain |
+| `work_enum` | Domain | Values MUST describe reusable work domains |
+| `invariant_enum` | Purpose | Represents a non-negotiable operating rule |
+| `invariant_enum` | Form | Values MUST read as directives |
+| `invariant_enum` | Positive form | Values MUST use the `DO_` prefix |
+| `invariant_enum` | Negative form | Values MUST use the `DO_NOT_` prefix |
 
-The system MUST use `entity_enum` to identify actors and systems that can record or receive a memory row.
+> ## b. Enum values MUST remain understandable without project-specific lore.
 
-The `entity_enum` values MUST be case-sensitive on the wire.
+> ## c. Memory documentation MUST NOT describe the `memory` table as graph storage.
 
-The system MUST use `relation_enum` to identify the action performed by the recording entity.
+> ## d. Memory documentation MUST NOT describe the `memory` table as append-only storage.
 
-The `relation_enum` values MUST support the sentence shape: `entity relation to_entity`.
+# 5. New Memory RPC
 
-The `relation_enum` values SHOULD be verbs.
+> ## a. Memory MUST expose an RPC named `new_memory` that inserts one memory row.
 
-The system MUST use `work_enum` to identify the work domain of a memory row.
+> ## b. `new_memory` MUST accept the following input contract.
 
-The `work_enum` values MUST describe work domains, not project lore.
+| Name | Type | Required | Meaning |
+| --- | --- | --- | --- |
+| `p_entity` | `entity_enum` | Yes | Recording actor |
+| `p_to_entity` | `entity_enum` | Yes | Relation target |
+| `p_relation` | `relation_enum` | Yes | Recorded action |
+| `p_work` | `work_enum` | Yes | Work domain |
+| `p_notes` | `text` | Yes | Recorded content |
 
-The system MUST use `invariant_enum` to represent non-negotiable operating rules as data.
+> ## c. `new_memory` MUST return the following row contract.
 
-The `invariant_enum` values MUST read as directives.
+| Name | Type |
+| --- | --- |
+| `id` | `bigint` |
+| `epoch` | `bigint` |
+| `entity` | `entity_enum` |
+| `to_entity` | `entity_enum` |
+| `relation` | `relation_enum` |
+| `work` | `work_enum` |
+| `notes` | `text` |
+| `active` | `boolean` |
 
-Positive invariant values MUST use the `DO_` prefix.
+> ## d. `new_memory` MUST complete the insert before semantic embedding is available.
 
-Negative invariant values MUST use the `DO_NOT_` prefix.
+> ## e. `new_memory` MUST NOT accept `notes_fts`.
 
-The system MUST NOT describe the `public.memory` table as graph-based unless graph storage or graph traversal behavior is added.
+> ## f. Postgres MUST generate `notes_fts` from `notes`.
 
-The system MUST NOT describe the `public.memory` table as append-only.
+> ## g. `new_memory` MUST NOT require an embedding.
 
-The system MUST expose an RPC function named `new_memory` for inserting a memory row.
+> ## h. The insert MUST NOT create a placeholder embedding.
 
-The `new_memory` function MUST accept `entity`, `to_entity`, `relation`, `work`, and `notes` input values.
+# 6. Get Memory RPC
 
-The `new_memory` function MUST insert the memory row before semantic embedding is required.
+> ## a. Memory MUST expose an RPC named `get_memory` that returns recorded memory rows.
 
-The system MAY generate embeddings after `new_memory` inserts the memory row.
+> ## b. `get_memory` MUST accept the following input contract.
 
-The `new_memory` function MUST return the inserted row's `id`, `epoch`, `entity`, `to_entity`, `relation`, `work`, `notes`, and `active` values.
+| Name | Type | Required | Default | Meaning |
+| --- | --- | --- | --- | --- |
+| `p_entity` | `entity_enum` | No | `null` | Recording actor filter |
+| `p_limit` | `integer` | No | `10` | Maximum returned rows |
 
-The `public.memory` `CREATE TABLE` statement MUST declare `notes_fts` as generated from `notes`.
+> ## c. `get_memory` MUST return the row contract defined at 5.c.
 
-The `new_memory` function MUST NOT accept `notes_fts` as an input value.
+> ## d. `get_memory` MUST apply the following behavior.
 
-The `new_memory` function MUST rely on Postgres to populate `notes_fts`.
+| Concern | Requirement |
+| --- | --- |
+| Entity filter | A null `p_entity` returns rows for every entity |
+| Visibility | Only rows where `active` is `true` are returned |
+| Order | Rows are ordered by `epoch` descending and then `id` descending |
+| Limit | No more than `p_limit` rows are returned |
+| Execution | The function runs as the calling role so Row Level Security controls the result |
 
-The system MUST expose an RPC function named `get_memory` for reading recorded memory rows.
+# 7. Search RPCs
 
-The `get_memory` function MUST accept an optional entity filter and an optional row limit.
+> ## a. Memory MUST expose an RPC named `search_memory` for hybrid full-text and semantic search using reciprocal-rank fusion.
 
-The `get_memory` function MUST default the entity filter to null and return rows for every entity when no entity is given.
+> ## b. `search_memory` MUST accept the following input contract.
 
-The `get_memory` function MUST default the row limit to 10.
+| Name | Type | Required | Default |
+| --- | --- | --- | --- |
+| `p_query` | `text` | Yes | None |
+| `p_query_embedding` | `vector` | Yes | None |
+| `p_match_count` | `integer` | No | `20` |
+| `p_rrf_k` | `integer` | No | `50` |
 
-The `get_memory` function MUST return only rows where `active` is true.
+> ## c. Memory MUST expose an RPC named `search_memory_embedding` for semantic cosine search.
 
-The `get_memory` function MUST order rows by `epoch` descending, then `id` descending, so the newest memory is the first row.
+> ## d. `search_memory_embedding` MUST accept the following input contract.
 
-The `get_memory` function MUST return each row's `id`, `epoch`, `entity`, `to_entity`, `relation`, `work`, `notes`, and `active` values.
+| Name | Type | Required | Default |
+| --- | --- | --- | --- |
+| `p_query_embedding` | `vector` | Yes | None |
+| `p_match_threshold` | `real` | No | `0.5` |
+| `p_match_count` | `integer` | No | `20` |
 
-The `get_memory` function MUST run as the calling role so Row Level Security gates which rows it returns.
+> ## e. Search RPCs MUST return the following result contract.
 
-Semantic search MUST only use rows where `embedding` is not null.
+| Name | Type |
+| --- | --- |
+| `source` | `text` |
+| `id` | `bigint` |
+| `epoch` | `bigint` |
+| `entity` | `entity_enum` |
+| `work` | `work_enum` |
+| `notes` | `text` |
+| `score` | `real` |
 
-The system MUST identify each calling agent as a Supabase Auth user.
+> ## f. Search RPCs MUST return only rows where `active` is `true`.
 
-A caller MUST present the publishable key on the `apikey` header and its user JWT on the `Authorization` header.
+> ## g. Semantic search MUST exclude rows where `embedding` is null.
 
-The system MUST NOT require any client to hold the project secret key.
+# 8. Edge Functions
 
-The system MUST expose a user-facing Edge Function named `search-memory`.
+> ## a. Memory MUST expose the following Edge Function contracts.
 
-The `search-memory` Edge Function MUST run as the calling user by forwarding the caller's JWT to PostgREST.
+| Name | Audience | Execution | Operation |
+| --- | --- | --- | --- |
+| `search-memory` | User-facing | Calling user | Embed a query and call a search RPC |
+| `get-memory` | User-facing | Calling user | Call `get_memory` |
+| `update-memory` | Internal | `service_role` | Write embeddings |
 
-The `search-memory` Edge Function MUST generate an embedding for the incoming query.
+> ## b. A caller of a user-facing Edge Function MUST present the publishable key on the `apikey` header.
 
-The `search-memory` Edge Function MUST call `search_memory` for hybrid search.
+> ## c. A caller of a user-facing Edge Function MUST present its user JWT on the `Authorization` header.
 
-The `search-memory` Edge Function MUST call `search_memory_embedding` for semantic-only search.
+> ## d. A user-facing Edge Function MUST forward the caller's JWT to PostgREST.
 
-The system MUST expose a user-facing Edge Function named `get-memory`.
+> ## e. `search-memory` MUST support hybrid search through `search_memory`.
 
-The `get-memory` Edge Function MUST run as the calling user by forwarding the caller's JWT to PostgREST.
+> ## f. `search-memory` MUST support semantic-only search through `search_memory_embedding`.
 
-The `get-memory` Edge Function MUST call `get_memory` for direct retrieval.
+> ## g. `get-memory` MUST accept the optional inputs defined at 6.b.
 
-The `get-memory` Edge Function MUST accept an optional entity and an optional limit and forward them to `get_memory`.
+> ## h. `get-memory` MUST forward its inputs to `get_memory`.
 
-The system MUST expose an internal Edge Function named `update-memory`.
+> ## i. `update-memory` MUST authorize the project secret key from the `apikey` header.
 
-The `update-memory` Edge Function MUST authorize the caller by the project secret key presented on the `apikey` header.
+> ## j. `update-memory` MUST support the following action contract.
 
-The `update-memory` Edge Function MUST run as `service_role` to write embeddings.
+| Action | Input | Type | Required | Behavior |
+| --- | --- | --- | --- | --- |
+| `set_memory_embedding` | `id` | `bigint` | Yes | Identifies the memory row |
+| `set_memory_embedding` | `sentence` | `text` | Yes | Supplies the text to embed |
+| `update_memory_embedding_queue` | None | None | No | Drains `get_memory_embedding_queue` |
 
-The `update-memory` Edge Function MUST support a `set_memory_embedding` action that requires `id` and `sentence` and stores one embedding for one memory row.
+> ## k. `update-memory` MUST respond with status 401 when the project secret key is absent or invalid.
 
-The `update-memory` Edge Function MUST support an `update_memory_embedding_queue` action that drains `get_memory_embedding_queue` and stores an embedding for each queued row.
+> ## l. `update-memory` MUST perform no action when authorization fails.
 
-Row Level Security MUST gate which rows the `authenticated` role can read and insert.
+> ## m. User-facing clients MUST NOT require the project secret key.
 
-The `authenticated` role MUST be able to execute `new_memory`, `get_memory`, `search_memory`, and `search_memory_embedding`.
+# 9. Embedding Pipeline
 
-The `public` and `anon` roles MUST NOT read or write `public.memory`.
+> ## a. Memory MUST use the following embedding pipeline.
 
-The `set_memory_embedding` RPC MUST NOT be executable by the `public`, `anon`, or `authenticated` roles.
+| Step | Component | Requirement |
+| --- | --- | --- |
+| 1 | `new_memory` | Insert the row without waiting for an embedding |
+| 2 | Postgres | Generate `id` during the insert |
+| 3 | Postgres | Generate `epoch` during the insert |
+| 4 | Postgres | Generate `notes_fts` during the insert |
+| 5 | `start_memory_embedding` | Run after the insert |
+| 6 | `convertto_memory_sentence` | Render the canonical sentence |
+| 7 | `start_memory_embedding` | Call `update-memory` with the row `id` |
+| 8 | `start_memory_embedding` | Send the rendered sentence |
+| 9 | `start_memory_embedding` | Present the project secret key on `apikey` |
+| 10 | `update-memory` | Generate the embedding |
+| 11 | `set_memory_embedding` | Store the embedding on the row |
 
-The `start_memory_embedding` trigger MUST present the project secret key on the `apikey` header when it calls `update-memory`.
+> ## b. A newly inserted row MUST be available to direct retrieval before embedding completes.
 
-## New Memory Flow
+> ## c. A newly inserted row MUST be available to full-text search before embedding completes.
 
-```mermaid
-sequenceDiagram
-    participant Caller
-    participant NewMemory as new_memory
-    participant Postgres
-    participant Trigger as start_memory_embedding
-    participant Edge as update-memory
-    participant Model as Embedding Model
+> ## d. A newly inserted row MUST become available to semantic search after embedding completes.
 
-    Caller->>NewMemory: entity, to_entity, relation, work, notes
-    NewMemory->>Postgres: insert memory row
-    Postgres-->>Postgres: generate id, epoch, notes_fts
-    Postgres->>Trigger: AFTER INSERT fires
-    Trigger-->>Trigger: render canonical memory sentence
-    Trigger->>Edge: set_memory_embedding (id, sentence), secret key on apikey
-    Edge->>Model: embed sentence
-    Model-->>Edge: embedding vector
-    Edge->>Postgres: store embedding vector
-```
+> ## e. `update_memory_embedding_queue` MUST backfill rows whose embedding is null.
 
-The caller submits `entity`, `to_entity`, `relation`, `work`, and `notes`.
+# 10. Access Control
 
-The `new_memory` function inserts the memory row immediately.
+> ## a. Every calling agent MUST authenticate as a Supabase Auth user.
 
-Postgres generates `id`, `epoch`, and `notes_fts` during insert.
+> ## b. Memory MUST enforce the following access contract.
 
-After the row is inserted, the `start_memory_embedding` trigger fires.
+| Caller | Operation | Control | Result |
+| --- | --- | --- | --- |
+| Authenticated | Read active rows | Row Level Security | Allow |
+| Authenticated | Insert rows | Row Level Security | Allow |
+| Authenticated | Execute `new_memory` | Function grant | Allow |
+| Authenticated | Execute `get_memory` | Function grant | Allow |
+| Authenticated | Execute `search_memory` | Function grant | Allow |
+| Authenticated | Execute `search_memory_embedding` | Function grant | Allow |
+| Authenticated | Execute `set_memory_embedding` | Function grant | Deny |
+| Unauthenticated | Read rows | Row Level Security | Deny |
+| Unauthenticated | Insert rows | Row Level Security | Deny |
+| Unauthenticated | Execute `set_memory_embedding` | Function grant | Deny |
 
-The trigger renders the canonical memory sentence with `convertto_memory_sentence`.
+# 11. Embedding Decision
 
-The trigger calls the `update-memory` Edge Function with the row `id` and the rendered sentence, presenting the project secret key on the `apikey` header.
+> ## a. Semantic embedding MUST remain asynchronous enrichment rather than required insert data.
 
-The Edge Function embeds the sentence and stores the returned vector in the row's `embedding` column.
+> ## b. The embedding alternatives are resolved as follows.
 
-The memory row is available for direct lookup and full-text search before embedding is complete.
+| Alternative | Decision | Reason |
+| --- | --- | --- |
+| Require embedding before insert | Rejected | Recording memory would depend on an external model call |
+| Insert first and embed later | Selected | Recording memory remains available when semantic enrichment is delayed |
+| Store a placeholder embedding | Rejected | Invalid semantic data would appear valid |
 
-The memory row is available for semantic search after embedding is complete.
+# 12. Deployment
 
-## Get Memory Flow
+> ## a. A valid deployment MUST satisfy the following ordered contract.
 
-```mermaid
-sequenceDiagram
-    participant Agent
-    participant Auth as Supabase Auth
-    participant GetMemory as get-memory
-    participant Postgres
+| Order | Artifact | Requirement |
+| --- | --- | --- |
+| 1 | `vector` | Enable the extension |
+| 2 | `pg_net` | Enable the extension |
+| 3 | `supabase_vault` | Enable the extension |
+| 4 | Enum types | Add missing shared values without recreating existing types |
+| 5 | `memory` | Apply the table definition |
+| 6 | Memory functions | Apply the function definitions |
+| 7 | Memory grants | Apply the grant definitions |
+| 8 | `start_memory_embedding` | Apply the trigger definition |
+| 9 | `search-memory` | Deploy with `verify_jwt` disabled because the function performs its own authorization |
+| 10 | `get-memory` | Deploy with `verify_jwt` disabled because the function performs its own authorization |
+| 11 | `update-memory` | Deploy with `verify_jwt` disabled because the function performs its own authorization |
+| 12 | Project URL | Store the value required by `start_memory_embedding` in Vault |
+| 13 | Project secret key | Store the value required by `start_memory_embedding` in Vault |
+| 14 | Restored rows with null embeddings | Backfill through `update_memory_embedding_queue` |
 
-    Agent->>Auth: sign in (email, secret)
-    Auth-->>Agent: user JWT
-    Agent->>GetMemory: entity (optional), limit (optional), publishable key on apikey + user JWT
-    GetMemory->>Postgres: get_memory as the caller
-    Postgres-->>GetMemory: active rows the caller may read under RLS, newest first
-    GetMemory-->>Agent: id, epoch, entity, to_entity, relation, work, notes, active
-```
+# 13. Acceptance
 
-The `get-memory` Edge Function owns direct retrieval. It runs as the calling user by forwarding the user JWT, so Row Level Security decides which rows it returns. It calls `get_memory`, which reads recorded memory rows separate from full-text and semantic search.
+> ## a. The specification MUST be verified against the following acceptance matrix.
 
-The caller MAY pass an entity to scope the read to one recording actor, or omit it to read across every entity.
-
-The caller MAY pass a limit, or omit it to take the default of 10.
-
-`get_memory` returns only rows where `active` is true, ordered newest first by `epoch` then `id`.
-
-Because the newest recorded memory is the first row returned, `get-memory` with no arguments is the grounding read for the latest activity across all entities.
-
-## Search Flow
-
-```mermaid
-sequenceDiagram
-    participant Agent
-    participant Auth as Supabase Auth
-    participant Search as search-memory
-    participant Model as Embedding Model
-    participant Postgres
-
-    Agent->>Auth: sign in (email, secret)
-    Auth-->>Agent: user JWT
-    Agent->>Search: query, publishable key on apikey + user JWT
-    Search->>Model: embed query
-    Model-->>Search: query embedding
-    Search->>Postgres: search_memory / search_memory_embedding as the caller
-    Postgres-->>Search: rows the caller may read under RLS
-    Search-->>Agent: results
-```
-
-The `search-memory` Edge Function owns semantic search. It runs as the calling user by forwarding the user JWT, so Row Level Security decides which rows the search returns. It embeds the query before calling the SQL search RPCs.
-
-## Update Flow
-
-```mermaid
-sequenceDiagram
-    participant Caller
-    participant Update as update-memory
-    participant Model as Embedding Model
-    participant Postgres
-
-    Caller->>Update: set_memory_embedding (id, sentence), secret key on apikey
-    Update->>Model: embed sentence
-    Model-->>Update: embedding vector
-    Update->>Postgres: set_memory_embedding as service_role
-```
-
-The `update-memory` Edge Function owns embedding writes. It authorizes the caller by the project secret key on the `apikey` header and runs as `service_role`. The `start_memory_embedding` trigger calls it per insert; the `update_memory_embedding_queue` action backfills rows whose embedding is still missing.
-
-## Alternatives
-
-### Require Embedding Before Insert
-
-The system could require every caller to generate an embedding before calling `new_memory`.
-
-This means the caller must build the memory payload, build the sentence to embed, call an embedding model, wait for the returned vector, and then call `new_memory` with the same memory payload plus the embedding.
-
-This keeps `embedding` non-null, but it makes the core memory insert depend on an external model call.
-
-This alternative is not preferred because recording memory should not be blocked by semantic enrichment.
-
-### Insert First, Embed Later
-
-The system can insert the memory row first and generate the embedding later.
-
-This means `new_memory` records the memory immediately, Postgres generates `notes_fts` immediately, and an embedding worker fills `embedding` after the row exists.
-
-This alternative is preferred because `embedding` is asynchronous enrichment, not core memory data.
-
-### Default Placeholder Embedding
-
-The system could make `embedding` not null by storing a default placeholder vector.
-
-This alternative is not preferred because a placeholder vector makes invalid semantic data look valid.
-
-This alternative is not preferred because semantic search would need to detect and ignore placeholder embeddings.
-
-## Deployment
-
-These are the conditions a valid deployment satisfies. The ordered, click-by-click procedure lives in the project README; this section states what MUST hold, not the steps.
-
-The system MUST enable the `vector`, `pg_net`, and `supabase_vault` extensions.
-
-The `entity_enum`, `relation_enum`, and `work_enum` types are shared with the thot system. Deployment MUST add missing values with `ALTER TYPE ... ADD VALUE` rather than recreate the types when they already exist.
-
-The SQL objects MUST be applied in dependency order: types, then the table and its policies, then the functions, then the grants, then the trigger.
-
-The `search-memory`, `get-memory`, and `update-memory` Edge Functions MUST be deployed with `verify_jwt` disabled, because each function authorizes its own caller.
-
-The Vault MUST hold the project URL and the project secret key that the `start_memory_embedding` trigger reads.
-
-After data is restored, embeddings for rows where `embedding` is null MUST be backfilled through the `update-memory` `update_memory_embedding_queue` action.
-
-## Acceptance Criteria
-
-Given the `public.memory` table definition,
-When the column list is reviewed,
-Then `id` is the primary key
-And `epoch` is present as Unix epoch time
-And `notes_fts` is present as a generated column.
-
-Given the enum SQL files,
-When enum values are reviewed,
-Then no enum value requires prior knowledge of AgentMemory, EdgeGrammar, ThotBot, or Optimus Sharp.
-
-Given the `relation_enum` SQL file,
-When each value is read in the shape `entity relation to_entity`,
-Then each value reads as an action performed by the recording entity.
-
-Given the `work_enum` SQL file,
-When each value is reviewed,
-Then each value names a reusable work domain.
-
-Given project documentation for the core table,
-When the table is described,
-Then the description does not use graph, append-only, governance, compliance, or ledger language.
-
-Given a caller has `entity`, `to_entity`, `relation`, `work`, and `notes`,
-When `new_memory` is called,
-Then the memory row is inserted.
-
-Given a caller has not generated an embedding,
-When `new_memory` is called,
-Then the insert succeeds
-And the insert does not create a placeholder embedding.
-
-Given `new_memory` inserts a memory row,
-When the function returns,
-Then the result includes `id` and `epoch`.
-
-Given a caller has `notes`,
-When `new_memory` is called,
-Then the caller does not provide `notes_fts`
-And Postgres generates `notes_fts` from `notes`.
-
-Given the `anon` role,
-When it tries to read or write `public.memory`,
-Then Row Level Security denies it.
-
-Given a signed-in agent presenting the publishable key and its user JWT,
-When it calls `new_memory`,
-Then the row is inserted under the `authenticated` role.
-
-Given a signed-in agent presenting the publishable key and its user JWT,
-When it calls the `search-memory` Edge Function,
-Then the function runs as that user
-And returns only rows the user may read under Row Level Security.
-
-Given a caller presenting the project secret key on the `apikey` header,
-When it calls the `update-memory` `set_memory_embedding` action for an existing row,
-Then the call succeeds
-And the row's `embedding` is no longer null.
-
-Given a caller that does not present the project secret key,
-When it calls `update-memory`,
-Then the function responds 401
-And performs no action.
-
-Given no arguments,
-When `get_memory` is called,
-Then it returns the most recent rows the caller may read under Row Level Security
-And the rows are ordered newest first
-And at most 10 rows are returned.
-
-Given an entity argument,
-When `get_memory` is called,
-Then it returns only rows recorded by that entity
-And only rows where `active` is true.
-
-Given a signed-in agent presenting the publishable key and its user JWT,
-When it calls `get_memory`,
-Then the function runs under the `authenticated` role
-And returns only rows the user may read under Row Level Security.
-
-Given a signed-in agent presenting the publishable key and its user JWT,
-When it calls the `get-memory` Edge Function with no arguments,
-Then the function runs as that user
-And returns at most 10 rows the user may read under Row Level Security, newest first.
+| Contract | Verification | Expected result |
+| --- | --- | --- |
+| Data model | Inspect the `memory` table | The table matches 3.a and 3.b |
+| Vocabulary | Inspect enum definitions | The types match 4.a and values satisfy 4.b |
+| Documentation | Inspect descriptions of `memory` | The descriptions satisfy 4.c and 4.d |
+| New memory | Call `new_memory` without an embedding | The row is inserted and the result matches 5.c |
+| Generated search value | Call `new_memory` with `notes` | Postgres generates `notes_fts` |
+| Placeholder prevention | Inspect the inserted row before enrichment | `embedding` is null |
+| Direct retrieval | Call `get_memory` without arguments | The result matches 6.c and 6.d |
+| Entity retrieval | Call `get_memory` with `p_entity` | Only active rows for that entity are returned |
+| Hybrid search | Call `search-memory` in hybrid mode | The function runs as the caller and returns only RLS-visible rows |
+| Semantic search | Search while a row has a null embedding | The row is excluded from semantic results |
+| Authorized embedding | Call `set_memory_embedding` through `update-memory` with the project secret key | The embedding is stored |
+| Unauthorized embedding | Call `update-memory` without the project secret key | The result satisfies 8.k and 8.l |
+| Unauthenticated read | Attempt to read `memory` without authentication | Row Level Security denies the operation |
+| Unauthenticated write | Attempt to insert into `memory` without authentication | Row Level Security denies the operation |
+| Deployment | Inspect the deployed environment | The environment satisfies section 12 |
