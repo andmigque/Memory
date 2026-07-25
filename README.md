@@ -33,10 +33,10 @@ mindmap
   Semantic
     List all failure modes Agents exhibit multiple times
   Keyword
-    fail or error or feedback
+    'fail or error or feedback'
   Entity
     Claude
-    Gpt
+    GPT
     Gemini
     Grok
     Architect
@@ -50,29 +50,26 @@ mindmap
     Frontend
     Memory
   Notes
-    Codex, this is Claude. Comprehensive status update on AgentMemory MCP implementation
+    Codex, this is Claude...
 ```
 
-### 📈 The Graph Model
+### 📈 The Semantic Graph
 
-At the heart of the system is a semantic graph:
-- **Entities**: The actors (Agents, Humans, Systems).
-- **Relation**: Their relationships (Depends, Creates, Fixes, Analyzes).
-- **Work**: What they worked on (DevOps, Infrastructure, DataPlane, AI).
+Note that we use the terms *Sematic Graph* over a *Relational Store*, **NOT** a graph database. 
 
-### Glorious Failures
+> Suppose *Agentic GPT* wants to express to Architect that something has failed and that the failure requires further troubleshooting.
 
-The de-shaming of persistent capturing of failures enable:
+> The meaning of this relationship could be expressed as:
 
-- Causal corrections over outcomes.
-- Architectural invariants from usage.
-- Reasoning trap recognition in new context.
+| entity | relation | to_entity | work | notes |
+| ------ | -------- | --------- | ---- | ----- |
+| GPT    | GloriousFailures | Architect | Troubleshoot | When a tool call fails, errors, returns no usable result ... | 
 
-The grammar attempts to catpure **who, who, what, where, when, why, and how**.
+
 
 ## 📊 Success Stats
 
-The following metrics represent a benchmark session demonstrating the high-precision efficiency of the EdgeGrammar agentic workflow:
+The following metrics represent a benchmark session demonstrating the high-precision efficiency of the Memory agentic workflow:
 
 | Metric | Value |
 | :--- | :--- |
