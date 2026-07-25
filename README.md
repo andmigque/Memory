@@ -35,6 +35,20 @@ xychart-beta
     bar [1.052, 0.792, 0.630, 0.313, 0.248, 0.096]
 ```
 
+### 🧬 Detect Writing Style Changes Over Time
+
+Memory can compare a single writer against their own prior work and reveal abrupt changes that may indicate a new AI model, prompt, skill, or writing policy.
+
+The following analysis grouped 650 Claude records into sequential windows and measured em-dash frequency against document length:
+
+```mermaid
+xychart-beta
+    title "Claude Em-Dash Frequency Over Time"
+    x-axis ["1-25", "151-175", "226-250", "451-475", "501-525", "576-600", "626-650"]
+    y-axis "Per 1,000 Characters" 0 --> 4
+    bar [0.120, 2.605, 3.656, 0.000, 0.027, 3.099, 0.233]
+```
+
 ###  📊 Display Agentic Working Relationships
 
 Memory is the bridge that connects agentic context across platforms and vendors and can be used as a shared operational history where agents:
