@@ -29,30 +29,44 @@ Memory is the bridge that connects agentic context across platforms and vendors.
 What makes Memory unique is the combination of the following *__Agentic Aspects__*:
 
 ```mermaid
-flowchart LR
-    Grammar[Typed Semantic Grammar]
-    Persistence[Durable Relational Storage]
-    Search[Keyword + Semantic Search]
-    Vendors[Cross-Vendor Access]
-    Learning[Failure-Derived Learning]
-
-    Grammar --> Memory((Memory))
-    Persistence --> Memory
-    Search --> Memory
-    Vendors --> Memory
-    Learning --> Memory
+mindmap
+  root((Memory))
+    Typed Semantic Grammar
+      Entity
+      Relation
+      Work
+      Notes
+    Durable Storage
+      Postgres
+      Supabase
+    Search
+      Keyword
+      Semantic
+    Cross-Vendor Access
+      Claude
+      GPT
+      Codex
+      Other Agents
+    Failure-Derived Learning
+      Glorious Failures
+      Corrections
+      Recovery Paths
 ```
 
 that power the *__Agentic Continuity Loop__*:
 
 ```mermaid
-flowchart LR
-    Human[Human or Agent] --> Act[Performs Work]
-    Act --> Record[Records Meaning]
-    Record --> Memory[(Memory)]
-    Memory --> Search[Future Agent Searches]
-    Search --> Ground[Agent Gains Context]
-    Ground --> Act
+sequenceDiagram
+    participant A as Human or Agent
+    participant M as Memory
+    participant F as Future Agent
+
+    A->>A: Performs work
+    A->>M: Records meaning
+    F->>M: Searches prior work
+    M-->>F: Returns relevant context
+    F->>F: Internalizes the context
+    F->>M: Continues the history
 ```
 
 ### 📈 The Semantic Grammar
@@ -82,19 +96,18 @@ Model memory usually belongs to one conversation, application, or vendor. Memory
 A record created by Claude in a coding session can later ground GPT on the web, Codex in a CLI, or another agent working in a different project context. The receiving agent does not need the original conversation. It searches for the meaning that matters and continues from the recorded state.
 
 ```mermaid
-flowchart TB
-    Claude[Claude]
-    GPT[GPT]
-    Codex[Codex]
-    Agent[Other Agents]
-    Human[Human]
-    Memory[(Memory)]
-
-    Claude <--> Memory
-    GPT <--> Memory
-    Codex <--> Memory
-    Agent <--> Memory
-    Human <--> Memory
+journey
+    title Context survives the conversation
+    section Claude coding session
+      Performs work: 5: Claude
+      Records meaning: 5: Claude
+    section GPT web session
+      Searches Memory: 5: GPT
+      Recovers context: 5: GPT
+      Continues the work: 5: GPT
+    section Codex CLI session
+      Searches Memory: 5: Codex
+      Builds on both sessions: 5: Codex
 ```
 
 This allows Memory to preserve continuity across model changes, application boundaries, expired conversations, and interrupted work.
@@ -110,6 +123,19 @@ This turns failure into reusable cognitive infrastructure. A future agent can re
 ## 🔎 Memory in Use
 
 Memory is used as a shared operational history rather than a passive archive. Agents search it before acting, use prior records to avoid duplicate work, and write decisions and outcomes back into the same substrate.
+
+A July 2026 production snapshot shows that Memory is dominated by acts of delivery, learning, documentation, failure capture, implementation, and receipt of work:
+
+```mermaid
+pie showData
+    title Frequent relationships in Memory
+    "Delivers" : 233
+    "Learns" : 111
+    "Documents" : 107
+    "Glorious Failures" : 83
+    "Implements" : 76
+    "Receives" : 71
+```
 
 The production corpus includes:
 
