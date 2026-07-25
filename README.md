@@ -48,7 +48,7 @@ From a different perspective, Memory can be thought of as a semantic graph over 
 mindmap
 ((Aspects))
   Semantic
-    List all failure modes Agents exhibit multiple times
+    List repeating failures
   Keyword
     'fail or error or feedback'
   Entity
