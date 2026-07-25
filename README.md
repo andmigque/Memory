@@ -42,7 +42,7 @@ flowchart LR
     Learning --> Memory
 ```
 
-that power the agentic continuity loop:
+that power the *__Agentic Continuity Loop__*:
 
 ```mermaid
 flowchart LR
