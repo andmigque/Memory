@@ -9,13 +9,15 @@ Memory works and has been tested with:
   - iOS
   - Desktop
 
-and
+*and*
 
 - Gpt/Codex
   - Web
   - CLI
   - Desktop
   - iOS
+
+*using the* [Supabase Plugin](https://supabase.com/docs/guides/ai-tools/plugins)
 
 Memory is the bridge that connects agentic context across platforms and vendors.
 
