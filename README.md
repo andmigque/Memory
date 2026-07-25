@@ -71,27 +71,35 @@ sequenceDiagram
 
 ### 🧬 The Semantic Grammar
 
-Memory forms a *semantic graph* over a *relational store*. It is **not** a graph database. Postgres stores typed records; the relationships expressed by those records form the graph.
+Memory forms a *semantic graph* over a *relational store*. It is **not** a graph database. Postgres stores one typed record per memory.
 
 ```mermaid
-erDiagram
-    ENTITY ||--o{ MEMORY : records
-    ENTITY ||--o{ MEMORY : receives
-    RELATION ||--o{ MEMORY : types
-    WORK ||--o{ MEMORY : contextualizes
-
-    MEMORY {
+classDiagram
+    class memory {
         bigint id
         entity_enum entity
         entity_enum to_entity
         relation_enum relation
         work_enum work
         text notes
-        vector embedding
+        tsvector notes_fts
+        boolean active
+        bigint epoch
+        vector(384) embedding
     }
 ```
 
-A record states that one entity performed a relation toward another entity within a work domain. Notes preserve the evidence, reasoning, correction, or intent that gives the relationship meaning.
+Within each row, the typed columns express a semantic relationship:
+
+```text
+entity --relation--> to_entity
+             |
+            work
+             |
+            notes
+```
+
+The generated `notes_fts` column supports keyword search. The `embedding` column supports semantic search. The `active` column controls read visibility, while `epoch` records when the memory was written.
 
 | entity | relation | to_entity | work | notes |
 | ------ | -------- | --------- | ---- | ----- |
@@ -99,7 +107,7 @@ A record states that one entity performed a relation toward another entity withi
 | Codex | Delivers | Architect | Frontend | A completed feature with verification and next steps |
 | Architect | Documents | Agent | Protocol | A durable rule future agents must follow |
 
-The table is storage. The relationships between its records are Memory.
+The row is relational storage. The relationship it expresses becomes part of Memory.
 
 ## 🌉 Agentic Continuity
 
