@@ -9,9 +9,6 @@ Memory works and has been tested with:
   - Code
   - iOS
   - Desktop
-
-*and*
-
 - GPT/Codex
   - Web
   - CLI
