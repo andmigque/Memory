@@ -198,7 +198,7 @@ This allows Memory to preserve continuity across model changes, application boun
 
 Successful outcomes preserve what worked. Glorious Failures preserve what failed.
 
-When a tool fails, an implementation diverges, or reasoning repeatedly produces poor results, Memory capture''s the failure as a semantic entity to entity work relationship. 
+When a tool fails, an implementation diverges, or reasoning repeatedly produces poor results, Memory captures why actions fail.
 Each new session context initializes with a curated list of failures specific to the session. 
 
 ## 📚 Specification
