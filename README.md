@@ -52,19 +52,7 @@ mindmap
 
 that power the *__Agentic Continuity Loop__*:
 
-```mermaid
-sequenceDiagram
-    participant A as Human or Agent
-    participant M as Memory
-    participant F as Future Agent
 
-    A->>A: Performs work
-    A->>M: Records meaning
-    F->>M: Searches prior work
-    M-->>F: Returns relevant context
-    F->>F: Internalizes the context
-    F->>M: Continues the history
-```
 
 ### 🧬 The Semantic Grammar
 
@@ -101,25 +89,20 @@ A record states that one entity performed a relation toward another entity withi
 
 The table is storage. The relationships between its records are Memory.
 
-## 🌉 Agentic Continuity
-
-Model memory usually belongs to one conversation, application, or vendor. Memory belongs to the work.
-
-A record created by Claude in a coding session can later ground GPT on the web, Codex in a CLI, or another agent working in a different project context. The receiving agent does not need the original conversation. It searches for the meaning that matters and continues from the recorded state.
+## 🌉 Continous Agentic Improvement
 
 ```mermaid
-journey
-    title Context survives the conversation
-    section Claude coding session
-      Performs work: 5: Claude
-      Records meaning: 5: Claude
-    section GPT web session
-      Searches Memory: 5: GPT
-      Recovers context: 5: GPT
-      Continues the work: 5: GPT
-    section Codex CLI session
-      Searches Memory: 5: Codex
-      Builds on both sessions: 5: Codex
+sequenceDiagram
+    participant A as Human or Agent
+    participant M as Memory
+    participant F as Future Agent
+
+    A->>A: Performs work
+    A->>M: Records meaning
+    F->>M: Searches prior work
+    M-->>F: Returns relevant context
+    F->>F: Internalizes the context
+    F->>M: Continues the history
 ```
 
 This allows Memory to preserve continuity across model changes, application boundaries, expired conversations, and interrupted work.
