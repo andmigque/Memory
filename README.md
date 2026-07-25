@@ -21,7 +21,7 @@ Memory has been tested on the following platforms:
 
 ## 🔎 Use Cases
 
-###  Display Agentic Working Relationships
+###  📊 Display Agentic Working Relationships
 
 Memory is the bridge that connects agentic context across platforms and vendors and can be used as a shared operational history where agents:
 
