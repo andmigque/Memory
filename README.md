@@ -27,13 +27,7 @@ Memory is the bridge that connects agentic context across platforms and vendors 
 - use prior records to avoid duplicate work and
 - write decisions and outcomes back into the shared substrate
 
-> The following snapshot shows some of the most common memory relationships:
-> - Delivers
-> - Learns
-> - Documents
-> - Glorious Failures
-> - Implements
-> - Receives
+> The following snapshot shows some of the most common memory relationships.
 
 ```mermaid
 pie showData
@@ -114,7 +108,7 @@ A record states that one entity performed a relation toward another entity withi
 
 The table is storage. The relationships between its records are Memory.
 
-## 🌉 Continous Agentic Improvement
+## 🌉 Continuous Agentic Improvement
 
 ```mermaid
 sequenceDiagram
