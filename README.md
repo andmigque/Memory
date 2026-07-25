@@ -1,6 +1,7 @@
 # 🤖🧠 Memory
 
-Memory is a supabase datastore that enables distributed agentic AI memory. It exposes both semantic and keyword search and excels at grounding Agents in brownfield environments.
+Memory is a Supabase datastore that enables distributed agentic AI memory. It exposes both semantic and keyword search and excels at grounding agents in brownfield environments.
+
 Memory works and has been tested with:
 
 - Claude
@@ -11,7 +12,7 @@ Memory works and has been tested with:
 
 *and*
 
-- Gpt/Codex
+- GPT/Codex
   - Web
   - CLI
   - Desktop
@@ -56,7 +57,7 @@ flowchart LR
 
 ### 📈 The Semantic Grammar
 
-Note that we use the terms *Sematic Graph* over a *Relational Store*, **NOT** a graph database. 
+Memory forms a *semantic graph* over a *relational store*. It is **not** a graph database. The graph exists in the meaning expressed by each record; Postgres provides the durable storage.
 
 ```
 entity → relation → to_entity
@@ -66,64 +67,64 @@ entity → relation → to_entity
            notes
 ```
 
-The following uses the notes column to express the meaning of the chosen grammar:
+The notes column preserves the context that makes the selected grammar meaningful:
 
-| entity | relation | to_entity |	work |	notes | 
-| ------ | -------- | --------- | ---- | ------ |
-| GPT	| GloriousFailures | Architect | Troubleshoot |	A tool failure and its recovery context |
-| Codex |	Delivers | Architect |	Frontend |	A completed feature with verification and next steps |
-| Architect |	Documents |	Agent |	Protocol |	A durable rule future agents must follow |
+| entity | relation | to_entity | work | notes |
+| ------ | -------- | --------- | ---- | ----- |
+| GPT | GloriousFailures | Architect | Troubleshoot | A tool failure and its recovery context |
+| Codex | Delivers | Architect | Frontend | A completed feature with verification and next steps |
+| Architect | Documents | Agent | Protocol | A durable rule future agents must follow |
 
+## 🌉 Agentic Continuity
 
-## 📊 Success Stats
+Model memory usually belongs to one conversation, application, or vendor. Memory belongs to the work.
 
-The following metrics represent a benchmark session demonstrating the high-precision efficiency of the Memory agentic workflow:
+A record created by Claude in a coding session can later ground GPT on the web, Codex in a CLI, or another agent working in a different project context. The receiving agent does not need the original conversation. It searches for the meaning that matters and continues from the recorded state.
 
-| Metric | Value |
-| :--- | :--- |
-| **Tool Calls** | 83 (79 Success / 4 Fail) |
-| **Success Rate** | **95.2%** |
-| **User Agreement** | **98.8%** (83 reviewed) |
-| **Code Changes** | +799 / -102 lines |
-| **Wall Time** | 2h 18m 24s |
-| **Agent Active Time** | 20m 30s |
-| **API / Tool Ratio** | 24.1% API / 75.9% Tool |
+```mermaid
+flowchart TB
+    Claude[Claude]
+    GPT[GPT]
+    Codex[Codex]
+    Agent[Other Agents]
+    Human[Human]
+    Memory[(Memory)]
 
-### Model Performance (gemini-3-flash-preview)
-| Context | Reqs | Input Tokens | Cache Reads | Output Tokens |
-| :--- | :--- | :--- | :--- | :--- |
-| **Main** | 106 | 4,217,383 | 3,632,979 | 21,458 |
-| **Utility** | 2 | 12,116 | 7,964 | 1,947 |
-| **Total** | **108** | **4,229,499** | **3,640,943** | **23,405** |
+    Claude <--> Memory
+    GPT <--> Memory
+    Codex <--> Memory
+    Agent <--> Memory
+    Human <--> Memory
+```
 
-## Environment Build
+This allows Memory to preserve continuity across model changes, application boundaries, expired conversations, and interrupted work.
 
-This repository is the source of the database and the Edge Functions. To stand the system up on a clean
-Supabase project, apply the pieces in dependency order, then restore the environment and the data.
+## 🔥 Glorious Failures
 
-1. **Extensions.** Enable `vector`, `pg_net`, and `supabase_vault`.
-2. **Types.** Apply `type/*.sql`. The enums are shared with the thot system; if they already exist, add
-   missing values with `ALTER TYPE ... ADD VALUE` rather than recreating them.
-3. **Table.** Apply `table/memory.sql` for the table, indexes, RLS, and policies.
-4. **Functions.** Apply the function files in `table/memory/`, `convertto_memory_sentence.sql` first,
-   skipping `grant_memory_access.sql` and `start_memory_embedding.sql`.
-5. **Grants.** Apply `table/memory/grant_memory_access.sql`.
-6. **Trigger.** Apply `table/memory/start_memory_embedding.sql`.
-7. **Edge Functions.** Deploy `supabase/functions/search-memory`, `supabase/functions/get-memory`, and
-   `supabase/functions/update-memory`. `supabase/config.toml` sets `verify_jwt = false` for all three.
-8. **Vault secrets.** Create `SUPABASE_URL_DEV` and `SUPABASE_SECRET_KEY_DEV` so the trigger can reach
-   `update-memory`.
-9. **Identities.** Create one Supabase Auth user per agent, and set each host's
-   `AGENT_SUPABASE_MEMORY_EMAIL` and `AGENT_SUPABASE_MEMORY_SECRET` to that user's login.
-10. **Data.** Restore the `public.memory` rows, then backfill embeddings by calling `update-memory` with
-    the `update_memory_embedding_queue` action.
-11. **Skills.** Run `deploy_skills.ps1` to publish the `search-memory`, `new-memory`, and `get-memory`
-    skills, then dot-source their scripts in the pwsh profile so the functions and the `SUPABASE_*` /
-    `AGENT_*` env load per session.
-12. **SessionStart hook.** Copy `hooks/claude/session_start.ps1` to `~/.claude/hooks/`. The SessionStart
-    command in `~/.claude/settings.json` runs it without `-NoProfile`, so the profile loads `Get-Memory`
-    and the hook grounds each session in the latest memories.
+Successful outcomes preserve what worked. Glorious Failures preserve what must not be misunderstood again.
 
-## Specification
+When a tool fails, an implementation diverges from the request, an agent follows a false assumption, or a reasoning pattern repeatedly produces poor results, Memory can retain the failure as a searchable relationship. The record captures the circumstances, the incorrect path, the correction, and the lesson derived from it.
 
-See the [Memory Specification](./memory.spec.md) for more in depth information.
+This turns failure into reusable cognitive infrastructure. A future agent can recognize the shape of a previous mistake before repeating the entire investigation.
+
+## 🔎 Memory in Use
+
+Memory is used as a shared operational history rather than a passive archive. Agents search it before acting, use prior records to avoid duplicate work, and write decisions and outcomes back into the same substrate.
+
+The production corpus includes:
+
+| Work preserved | How it is used |
+| -------------- | -------------- |
+| Implementations and deliveries | Continue completed or partially completed engineering work |
+| Plans and decisions | Recover intent before changing an existing system |
+| Research and discoveries | Reuse findings and avoid investigating the same target twice |
+| Feedback and corrections | Preserve user preferences and architectural constraints |
+| Security and troubleshooting | Retain evidence, root causes, and recovery paths |
+| Glorious Failures | Recognize recurring tool, reasoning, and execution failures |
+| Creative work | Continue writing processes and artifacts across models and sessions |
+
+Memory does not merely preserve what was said. It preserves what happened, who acted, what changed, and why the result matters to future work.
+
+## 📚 Specification
+
+See the [Memory Specification](./memory.spec.md) for the normative data model, access controls, search behavior, and embedding requirements.
