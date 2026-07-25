@@ -63,7 +63,7 @@ xychart-beta
     bar [17.84, 30.44, 32.17, 29.39, 17.59, 15.71, 14.73, 15.32, 15.60]
 ```
 
-Claude's vocabulary complexity falls from roughly 30-32% polysyllabic words in earlier windows to roughly 15-17% in later windows. Together with the em-dash analysis, this provides a second independent signal of writing style changes over time.
+As Claude models became more capable, they used less complex vocabulary. Polysyllabic words fell from roughly 30–32% in earlier record windows to 15–17% in later windows. The smarter models communicated with simpler words.
 
 Memory can also compare vocabulary complexity across writers:
 
