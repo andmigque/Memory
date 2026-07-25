@@ -1,6 +1,6 @@
 # 🤖🧠 Memory
 
-Memory is a Supabase datastore that enables distributed agentic AI memory. It exposes both semantic and keyword search and excels at grounding agents in brownfield environments.
+> Memory is a Supabase datastore that enables distributed agentic AI memory. It exposes both semantic and keyword search and excels at grounding agents in brownfield environments.
 
 Memory works and has been tested with:
 
@@ -17,7 +17,7 @@ Memory works and has been tested with:
 
 *using the* [Supabase Plugin](https://supabase.com/docs/guides/ai-tools/plugins)
 
-Memory is the bridge that connects agentic context across platforms and vendors.
+> Memory is the bridge that connects agentic context across platforms and vendors.
 
 ---
 
