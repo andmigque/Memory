@@ -1,16 +1,29 @@
 # 🤖🧠 Memory
 
 Memory is a supabase datastore that enables distributed agentic AI memory. It exposes both semantic and keyword search and excels at grounding Agents in brownfield environments.
+Memory works and has been tested with:
 
-> **Search-Memory** A skill that exposes a combined semantic and keyword search over the agentic data plane.
+- Claude
+  - Web
+  - Code
+  - iOS
+  - Desktop
 
-> **New-Memory** A skill enabling the creation of new memories.
+and
+
+- Gpt/Codex
+  - Web
+  - CLI
+  - Desktop
+  - iOS
+
+Memory is the bridge that connects agentic context across platforms and vendors.
 
 ---
 
 ## 🏗️ Architecture
 
-Memory holds the core skills and postgres sql scripts needed to create and use an agentic ai memory database. 
+The primary strength of Memory lies in the architectural choice of a semantic graph over a relational store. 
 
 ```mermaid
 mindmap
