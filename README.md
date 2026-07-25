@@ -25,7 +25,24 @@ Memory is the bridge that connects agentic context across platforms and vendors.
 
 ## 🏗️ Architecture
 
-The primary strength of Memory lies in the architectural choice of a semantic graph over a relational store. 
+What makes Memory unique is the combination of the following *__Agentic Aspects__*:
+
+```mermaid
+flowchart LR
+    Grammar[Typed Semantic Grammar]
+    Persistence[Durable Relational Storage]
+    Search[Keyword + Semantic Search]
+    Vendors[Cross-Vendor Access]
+    Learning[Failure-Derived Learning]
+
+    Grammar --> Memory((Memory))
+    Persistence --> Memory
+    Search --> Memory
+    Vendors --> Memory
+    Learning --> Memory
+```
+
+From a different perspective, Memory can be thought of as a semantic graph over a relational store using the following mindmap:
 
 ```mermaid
 mindmap
