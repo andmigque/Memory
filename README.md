@@ -42,32 +42,16 @@ flowchart LR
     Learning --> Memory
 ```
 
-From a different perspective, Memory can be thought of as a semantic graph over a relational store using the following mindmap:
+that power the agentic continuity loop:
 
 ```mermaid
-mindmap
-((Aspects))
-  Semantic
-    List repeating failures
-  Keyword
-    'fail or error or feedback'
-  Entity
-    Claude
-    GPT
-    Gemini
-    Grok
-    Architect
-    Human
-  Relation
-    Analyzes
-    Delivers
-    Observes
-  Work
-    DataPlane
-    Frontend
-    Memory
-  Notes
-    Codex, this is Claude...
+flowchart LR
+    Human[Human or Agent] --> Act[Performs Work]
+    Act --> Record[Records Meaning]
+    Record --> Memory[(Memory)]
+    Memory --> Search[Future Agent Searches]
+    Search --> Ground[Agent Gains Context]
+    Ground --> Act
 ```
 
 ### 📈 The Semantic Grammar
@@ -84,13 +68,13 @@ entity → relation → to_entity
 
 The following uses the notes column to express the meaning of the chosen grammar:
 
-| entity | relation | to_entity |	Work |	Notes | 
+| entity | relation | to_entity |	work |	notes | 
 | ------ | -------- | --------- | ---- | ------ |
 | GPT	| GloriousFailures | Architect | Troubleshoot |	A tool failure and its recovery context |
 | Codex |	Delivers | Architect |	Frontend |	A completed feature with verification and next steps |
 | Architect |	Documents |	Agent |	Protocol |	A durable rule future agents must follow |
 
-
+### 📊 The Continuity Loop
 
 ## 📊 Success Stats
 
