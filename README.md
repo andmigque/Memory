@@ -69,25 +69,37 @@ sequenceDiagram
     F->>M: Continues the history
 ```
 
-### 📈 The Semantic Grammar
+### 🧬 The Semantic Grammar
 
-Memory forms a *semantic graph* over a *relational store*. It is **not** a graph database. The graph exists in the meaning expressed by each record; Postgres provides the durable storage.
+Memory forms a *semantic graph* over a *relational store*. It is **not** a graph database. Postgres stores typed records; the relationships expressed by those records form the graph.
 
+```mermaid
+erDiagram
+    ENTITY ||--o{ MEMORY : records
+    ENTITY ||--o{ MEMORY : receives
+    RELATION ||--o{ MEMORY : types
+    WORK ||--o{ MEMORY : contextualizes
+
+    MEMORY {
+        bigint id
+        entity_enum entity
+        entity_enum to_entity
+        relation_enum relation
+        work_enum work
+        text notes
+        vector embedding
+    }
 ```
-entity → relation → to_entity
-             │
-           work
-             │
-           notes
-```
 
-The notes column preserves the context that makes the selected grammar meaningful:
+A record states that one entity performed a relation toward another entity within a work domain. Notes preserve the evidence, reasoning, correction, or intent that gives the relationship meaning.
 
 | entity | relation | to_entity | work | notes |
 | ------ | -------- | --------- | ---- | ----- |
 | GPT | GloriousFailures | Architect | Troubleshoot | A tool failure and its recovery context |
 | Codex | Delivers | Architect | Frontend | A completed feature with verification and next steps |
 | Architect | Documents | Agent | Protocol | A durable rule future agents must follow |
+
+The table is storage. The relationships between its records are Memory.
 
 ## 🌉 Agentic Continuity
 
