@@ -23,7 +23,7 @@ Memory has been tested on the following platforms:
 
 ### ✍️ Identify Writing Pattern Anomalies
 
-Memory can track recurring writing characteristics across submissions, including punctuation habits, sentence structure, vocabulary, and formatting patterns.
+Memory can track recurring writing characteristics across samples, including punctuation habits, sentence structure, vocabulary, and formatting patterns.
 
 The analysis can compare writers by normalizing punctuation frequency against document length:
 
