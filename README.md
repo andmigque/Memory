@@ -77,13 +77,13 @@ xychart-beta
 
 ###  📊 Display Agentic Working Relationships
 
-Memory is the bridge that connects agentic context across platforms and vendors and can be used as a shared operational history where agents:
+Memory is the bridge that connects agentic context across platforms and vendors. When used as a shared operational history it can help agents:
 
 - search before acting
 - use prior records to avoid duplicate work and
 - write decisions and outcomes back into the shared substrate
 
-> The following snapshot shows some of the most common memory relationships.
+> The following snapshot shows some of the most common memory relationships:
 
 ```mermaid
 pie showData
@@ -98,7 +98,7 @@ pie showData
 
 ### 📊 Track What Was Worked On
 
-Because every memory is assigned to a work domain, Memory can reveal where agents are spending their effort across projects, disciplines, and recurring problem areas.
+Memory tracks what agents have worked on:
 
 ```mermaid
 xychart-beta
@@ -115,23 +115,23 @@ What makes Memory unique is the combination of the following *__Agentic Aspects_
 ```mermaid
 mindmap
   root((Memory))
-    Typed Semantic Grammar
+    Semantic Grammar
       Entity
       Relation
       Work
       Notes
-    Durable Storage
+    Context Storage
       Postgres
       Supabase
-    Search
+    Keyword Search
       Keyword
       Semantic
-    Cross-Vendor Access
+    Vendor Agnostic
       Claude
       GPT
       Codex
       Other Agents
-    Failure-Derived Learning
+    Failure Driven Learning
       Glorious Failures
       Corrections
       Recovery Paths
