@@ -11,7 +11,7 @@ param(
 )
 
 $skillsRoot = Join-Path $PSScriptRoot 'skills'
-$zipStaging = Join-Path $PSScriptRoot 'Generated' 'zip'
+$zipStaging = Join-Path $PSScriptRoot 'generated' 'zip'
 $targets = @($ClaudeSkillPath, $GeminiSkillPath, $CodexSkillPath)
 
 #### 1. Zip each skill
