@@ -40,15 +40,17 @@ if ($entry.PSObject.Properties['error'] -and -not [string]::IsNullOrWhiteSpace([
 }
 
 $message = @"
-TOOL FAILURE — record a Glorious Failure before continuing.
+TOOL FAILURE: Record a Glorious Failure before continuing.
 
 Tool:       $toolName
 error_type: $errorType
 error:      $errorText
 
-Record it now with New-Memory: Relation GloriousFailures, Work Cognition. The
-notes must describe what YOU did wrong — the mistake, its root cause, and the
-requirement the failure produces.
+Record it now with New-Memory: Relation GloriousFailures, Work Cognition. 
+The notes must describe what YOU did wrong: 
+- the mistake, 
+- it's root cause, 
+- and the requirement the failure produces.
 
 If you do NOT actually know what you did wrong, STOP and ask the Architect
 before recording. Do not invent a cause.
