@@ -16,7 +16,7 @@ Sections are settled one at a time. A section is settled only after review.
 | 2 | Scope | Pending review |
 | 3 | Documentation | Settled |
 | 4 | Record | Settled |
-| 5 | Generated State | Pending |
+| 5 | Generated State | Folded into Record |
 | 6 | Visibility | Pending |
 | 7 | Vocabulary | Pending |
 | 8 | Enrichment | Pending |
@@ -71,3 +71,8 @@ Pending review. Carried unchanged from `memory.spec.md` section 2.
 | 4.1 | MUST | Notes contain a comprehensive account of the unique event that occurred |
 | 4.2 | MUST | Block ability to delete records |
 | 4.3 | MUST | Build interfaces that use the active column as a soft delete in lieu of hard deletes |
+| 4.4 | MUST | Time created is immutable |
+| 4.5 | MUST | Update the time updated column on every distinct row mutation |
+| 4.6 | MUST | Auto populate time created in the datastore on first insert |
+| 4.7 | MUST | Auto populate time updated in the datastore |
+| 4.8 | MUST NOT | Time updated supplied by the caller |
