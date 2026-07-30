@@ -16,18 +16,19 @@ Sections are settled one at a time. A section is settled only after review.
 | 2 | Scope | Pending review |
 | 3 | Documentation | Settled |
 | 4 | Record | Settled |
-| 5 | Generated State | Folded into Record |
-| 6 | Visibility | Pending |
-| 7 | Vocabulary | Pending |
-| 8 | Enrichment | Pending |
-| 9 | Capabilities | Pending |
-| 10 | Access | Pending |
-| 11 | Boundaries | Pending |
-| 12 | Grounding | Pending |
-| 13 | Failure Capture | Pending |
-| 14 | Portability | Pending |
-| 15 | Deployment | Pending |
-| 16 | Acceptance | Pending |
+| 5 | Vocabulary | Settled |
+| 6 | Access | Pending |
+| 7 | Enrichment | Pending |
+| 8 | Capabilities | Pending |
+| 9 | Boundaries | Pending |
+| 10 | Grounding | Pending |
+| 11 | Failure Capture | Pending |
+| 12 | Portability | Pending |
+| 13 | Deployment | Pending |
+| 14 | Acceptance | Pending |
+
+Generated State was folded into Record. Its time invariants are 4.4 through 4.8 and its
+remaining content restated what the schema already enforces.
 
 # 1. Normative Language
 
@@ -76,3 +77,12 @@ Pending review. Carried unchanged from `memory.spec.md` section 2.
 | 4.6 | MUST | Auto populate time created in the datastore on first insert |
 | 4.7 | MUST | Auto populate time updated in the datastore |
 | 4.8 | MUST NOT | Time updated supplied by the caller |
+
+# 5. Vocabulary
+
+| # | Rule | Invariant |
+| --- | --- | --- |
+| 5.1 | MUST | Vocabulary words are sql Enums under `type/` |
+| 5.2 | MAY | New work Enums added by Architect |
+| 5.3 | MUST | Build a mechanism to detect drift |
+| 5.4 | MUST | Build a mechanism to reconcile drift from production into the repository |
