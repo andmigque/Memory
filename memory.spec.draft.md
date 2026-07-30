@@ -15,7 +15,7 @@ Sections are settled one at a time. A section is settled only after review.
 | 1 | Normative Language | Pending review |
 | 2 | Scope | Pending review |
 | 3 | Documentation | Settled |
-| 4 | Record | Pending |
+| 4 | Record | Settled |
 | 5 | Generated State | Pending |
 | 6 | Visibility | Pending |
 | 7 | Vocabulary | Pending |
@@ -63,3 +63,11 @@ Pending review. Carried unchanged from `memory.spec.md` section 2.
 | 3.12 | MUST | Every markdown element addressable by unique semver style address |
 | 3.13 | MAY | Exact heading and blockquote conventions of the Markdown Writing Rules |
 | 3.14 | MUST | Code documented using [Sharpdown](https://github.com/andmigque/Sharpdown) |
+
+# 4. Record
+
+| # | Rule | Invariant |
+| --- | --- | --- |
+| 4.1 | MUST | Notes contain a comprehensive account of the unique event that occurred |
+| 4.2 | MUST | Block ability to delete records |
+| 4.3 | MUST | Build interfaces that use the active column as a soft delete in lieu of hard deletes |
