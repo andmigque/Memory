@@ -2,6 +2,8 @@
 
 # 1. Specification
 
+Memory is expected to evolve across schemas, clients, and deployment mechanisms. This document defines the durable contract at a level that survives those changes while preserving exact references for review and change control.
+
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
 | 1.1 | MUST | Publish | Use normative keywords according to RFC 2119 and RFC 8174 |
@@ -15,6 +17,8 @@
 | 1.9 | MUST | Publish | Confirm conformance when every MUST is satisfied |
 
 # 2. Status
+
+The specification records both current behavior and approved future behavior. Status allows design to be reviewed before implementation without presenting planned capabilities as already shipped.
 
 The following are approved status verbs.
 
@@ -42,6 +46,8 @@ The following are approved status verbs.
 
 # 3. Documentation
 
+Documentation is the public interpretation layer for Memory. Because the product can be misclassified by looking only at its storage technology or agent integrations, its documentation must preserve the distinction between storage, semantic meaning, and agent behavior. Claims about the product should remain traceable to evidence so the description can evolve without becoming folklore.
+
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
 | 3.1 | MUST | Publish | Publish the product as a datastore that enables Continuous Agentic Improvement |
@@ -59,6 +65,8 @@ The following are approved status verbs.
 | 3.13 | MUST | Publish | Use the term full text search, not keyword search |
 
 # 4. Record
+
+The record is Memory’s unit of continuity. Its value comes from preserving enough context for a future agent to understand not only what happened, but why it mattered, across model changes, application boundaries, and interrupted work.
 
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
@@ -85,12 +93,16 @@ The following are approved status verbs.
 
 # 5. Authentication
 
+Authentication gives Memory a stable caller identity across different agents and clients. It establishes who is making a request without deciding what that caller is permitted to do.
+
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
 | 5.1 | MUST | Publish | Confirm caller authentication as a Supabase Auth user |
 | 5.2 | MUST | Publish | Deny requests carrying no valid session |
 
 # 6. Authorization
+
+Authorization protects the shared history from unauthorized or accidental change while allowing agents to participate in it. Enforcement belongs at the datastore boundary so every access path inherits the same controls.
 
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
