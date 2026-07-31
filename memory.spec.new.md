@@ -51,7 +51,7 @@ Documentation is the public interpretation layer for Memory. Because the product
 
 # 4. Record
 
-The record is Memory’s unit of continuity. Its value comes from preserving enough context for a future agent to understand not only what happened, but why it mattered, across model changes, application boundaries, and interrupted work.
+The record is Memory's unit of continuity. Its value comes from preserving enough context for a future agent to understand not only what happened, but why it mattered, across model changes, application boundaries, and interrupted work.
 
 | # | Rule | Invariant | Status |
 | --- | --- | --- | --- |
