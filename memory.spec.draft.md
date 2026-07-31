@@ -13,7 +13,17 @@ Naming a credential, a flag, a file path, or a function is.
 
 Sections are settled one at a time. A section is settled only after review.
 
-## Status
+## Status vocabulary
+
+Status uses verbs already in use. No new words are coined for it.
+
+| Status | Meaning |
+| --- | --- |
+| Publish | Requirement is in force and the behavior exists |
+| Register | Requirement is entered but the behavior does not exist yet |
+| Unpublish | Requirement was withdrawn |
+
+## Section status
 
 | Section | Title | State |
 | --- | --- | --- |
@@ -48,69 +58,68 @@ the obligation is to remove it rather than to refrain from writing it.
 
 Pending review. Carried unchanged from `memory.spec.md` section 1.
 
-| # | Rule | Invariant |
-| --- | --- | --- |
-| 1.1 | MUST | Normative keywords interpreted according to RFC 2119 and RFC 8174 |
+| # | Rule | Status | Invariant |
+| --- | --- | --- | --- |
+| 1.1 | MUST | Publish | Normative keywords interpreted according to RFC 2119 and RFC 8174 |
 
 # 2. Scope
 
 Pending review. Carried unchanged from `memory.spec.md` section 2.
 
-| # | Rule | Invariant |
-| --- | --- | --- |
-| 2.1 | MUST | Requirements for Memory defined by this document |
+| # | Rule | Status | Invariant |
+| --- | --- | --- | --- |
+| 2.1 | MUST | Publish | Requirements for Memory defined by this document |
 
 # 3. Documentation
 
-| # | Rule | Invariant |
-| --- | --- | --- |
-| 3.1 | MUST | Publish the product as a datastore that enables Continuous Agentic Improvement |
-| 3.2 | SHOULD | Publish support for at least 2 agents: Claude and Codex |
-| 3.3 | SHOULD | Publish record relationships as the semantic graph |
-| 3.4 | MUST | Unpublish the record store as graph storage |
-| 3.5 | MUST | Unpublish the record store as append only storage |
-| 3.6 | MUST | Unpublish Memory as built in agent memory |
-| 3.7 | MUST | Unpublish Memory as chat recollection |
-| 3.8 | MUST | Unpublish Memory as a remembered summary |
-| 3.9 | MUST | Publish unimplemented behavior as planned |
-| 3.10 | SHOULD | Save the query artifact that produces each documented statistic |
-| 3.11 | SHOULD | Update documentation with behavior changes in the same change |
-| 3.12 | MUST | Set a unique semver style address on every markdown element |
-| 3.13 | MAY | Use the exact heading and blockquote conventions of the Markdown Writing Rules |
-| 3.14 | MUST | Use [Sharpdown](https://github.com/andmigque/Sharpdown) to document code |
-| 3.15 | MUST | Use the term full text search, not keyword search |
+| # | Rule | Status | Invariant |
+| --- | --- | --- | --- |
+| 3.1 | MUST | Publish | Publish the product as a datastore that enables Continuous Agentic Improvement |
+| 3.2 | SHOULD | Publish | Publish support for at least 2 agents: Claude and Codex |
+| 3.3 | SHOULD | Publish | Publish record relationships as the semantic graph |
+| 3.4 | MUST | Publish | Unpublish the record store as graph storage |
+| 3.5 | MUST | Publish | Unpublish the record store as append only storage |
+| 3.6 | MUST | Publish | Unpublish Memory as built in agent memory |
+| 3.7 | MUST | Publish | Unpublish Memory as chat recollection |
+| 3.8 | MUST | Publish | Unpublish Memory as a remembered summary |
+| 3.9 | SHOULD | Register | Save the query artifact that produces each documented statistic |
+| 3.10 | SHOULD | Publish | Update documentation with behavior changes in the same change |
+| 3.11 | MUST | Publish | Set a unique semver style address on every markdown element |
+| 3.12 | MAY | Publish | Use the exact heading and blockquote conventions of the Markdown Writing Rules |
+| 3.13 | MUST | Publish | Use [Sharpdown](https://github.com/andmigque/Sharpdown) to document code |
+| 3.14 | MUST | Publish | Use the term full text search, not keyword search |
 
 # 4. Record
 
-| # | Rule | Invariant |
-| --- | --- | --- |
-| 4.1 | MUST | Write a comprehensive account of the unique event that occurred in notes |
-| 4.2 | MUST | Block the ability to delete records |
-| 4.3 | MUST | Build interfaces that use the active column as a soft delete in lieu of hard deletes |
-| 4.4 | MUST | Lock time created after first insert |
-| 4.5 | MUST | Update the time updated column on every distinct row mutation |
-| 4.6 | MUST | Set the time created column automatically in the datastore on first insert |
-| 4.7 | MUST | Set the time updated column automatically in the datastore |
-| 4.8 | MUST NOT | Receive a time updated value from the caller |
-| 4.9 | SHOULD | Build the full text search value from notes in the datastore on the record |
-| 4.10 | SHOULD | Build embeddings asynchronously in the datastore on the record |
-| 4.11 | MUST NOT | Write placeholder embeddings |
-| 4.12 | MUST | Register vocabulary words as sql Enums under `type/` |
-| 4.13 | MAY | Publish new work Enums as approved by Architect |
-| 4.14 | MUST | Build a mechanism to detect drift |
-| 4.15 | MUST | Build a mechanism to reconcile drift from production into the repository |
+| # | Rule | Status | Invariant |
+| --- | --- | --- | --- |
+| 4.1 | MUST | Publish | Write a comprehensive account of the unique event that occurred in notes |
+| 4.2 | MUST | Publish | Block the ability to delete records |
+| 4.3 | MUST | Register | Build interfaces that use the active column as a soft delete in lieu of hard deletes |
+| 4.4 | MUST | Register | Lock time created after first insert |
+| 4.5 | MUST | Register | Update the time updated column on every distinct row mutation |
+| 4.6 | MUST | Register | Set the time created column automatically in the datastore on first insert |
+| 4.7 | MUST | Register | Set the time updated column automatically in the datastore |
+| 4.8 | MUST NOT | Register | Receive a time updated value from the caller |
+| 4.9 | SHOULD | Publish | Build the full text search value from notes in the datastore on the record |
+| 4.10 | SHOULD | Publish | Build embeddings asynchronously in the datastore on the record |
+| 4.11 | MUST NOT | Publish | Write placeholder embeddings |
+| 4.12 | MUST | Publish | Register vocabulary words as sql Enums under `type/` |
+| 4.13 | MAY | Publish | Publish new work Enums as approved by Architect |
+| 4.14 | MUST | Register | Build a mechanism to detect drift |
+| 4.15 | MUST | Register | Build a mechanism to reconcile drift from production into the repository |
 
 # 5. Authentication
 
-| # | Rule | Invariant |
-| --- | --- | --- |
-| 5.1 | MUST | Confirm caller authentication as a Supabase Auth user |
-| 5.2 | MUST | Deny requests carrying no valid session |
+| # | Rule | Status | Invariant |
+| --- | --- | --- | --- |
+| 5.1 | MUST | Publish | Confirm caller authentication as a Supabase Auth user |
+| 5.2 | MUST | Publish | Deny requests carrying no valid session |
 
 # 6. Authorization
 
-| # | Rule | Invariant |
-| --- | --- | --- |
-| 6.1 | MUST | Grant create, read, and update operations |
-| 6.2 | SHOULD | Limit reads to active records |
-| 6.3 | MUST | Enable row level security |
+| # | Rule | Status | Invariant |
+| --- | --- | --- | --- |
+| 6.1 | MUST | Register | Grant create, read, and update operations |
+| 6.2 | SHOULD | Publish | Limit reads to active records |
+| 6.3 | MUST | Publish | Enable row level security |
