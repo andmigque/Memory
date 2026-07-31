@@ -1,21 +1,22 @@
 # Memory Specification
 
-Draft of the specification rewrite. `memory.spec.md` remains the source of truth until this
-draft approves and replaces it.
+# 1. Specification
 
-The rewrite states each invariant at exactly one address. Sections cite addresses rather than
-restating invariants, so an invariant changes in one place.
+| # | Rule | Status | Invariant |
+| --- | --- | --- | --- |
+| 1.1 | MUST | Publish | Use normative keywords according to RFC 2119 and RFC 8174 |
+| 1.2 | MUST | Publish | Limit this specification to Memory invariants |
+| 1.3 | MUST | Publish | State each invariant at one address |
+| 1.4 | MUST | Publish | Cite addresses in place of restating invariants |
+| 1.5 | MUST | Publish | Open each invariant with an approved PowerShell verb |
+| 1.6 | MUST | Publish | Set a unique semver style address on every markdown element |
+| 1.7 | MUST | Publish | Name Supabase and Postgres |
+| 1.8 | MUST NOT | Publish | Name a credential, flag, file path, or function |
+| 1.9 | MUST | Publish | Confirm conformance when every MUST is satisfied |
 
-Every invariant reads as a sentence and opens with an approved PowerShell verb.
+# 2. Status
 
-Memory is committed to Supabase and Postgres. Naming either is not an implementation leak.
-Naming a credential, a flag, a file path, or a function is.
-
-Sections approve one at a time. A section approves only after review.
-
-## Status vocabulary
-
-Status uses verbs already in use. No new words are coined for it.
+The following are approved status verbs.
 
 | Status | Meaning |
 | --- | --- |
@@ -24,63 +25,20 @@ Status uses verbs already in use. No new words are coined for it.
 | Register | Entered but the behavior does not exist yet |
 | Unpublish | Withdrawn |
 
-Sections carry Approve once reviewed. Invariants carry Publish, Register or Unpublish. An
-approved section may hold registered invariants, because review and implementation are
-different axes.
-
-## Section status
+| # | Rule | Status | Invariant |
+| --- | --- | --- | --- |
+| 2.1 | MUST | Publish | Approve a section after review |
+| 2.2 | MUST | Publish | Set Publish, Register or Unpublish on each invariant |
+| 2.3 | MAY | Publish | Approve a section holding registered invariants |
 
 | Section | Title | Status |
 | --- | --- | --- |
-| 1 | Normative Language | Approve |
-| 2 | Scope | Approve |
+| 1 | Specification | Approve |
+| 2 | Status | Approve |
 | 3 | Documentation | Approve |
 | 4 | Record | Approve |
 | 5 | Authentication | Approve |
 | 6 | Authorization | Approve |
-
-## Merged sections
-
-Generated State, Semantic Enrichment, Vocabulary and Capabilities merged into Record.
-Generated state is the record time columns. Enrichment converts notes to a value stored on
-the record. The vocabulary is the record. The capabilities are record operations.
-
-Boundaries merged into Authentication and Authorization. Every invariant it would have
-carried is authentication, authorization, or an edge function binding.
-
-Record will later subdivide so its groups carry their own addresses, with 4.1 covering notes,
-4.2 removal and status, 4.3 time, 4.4 derived values, 4.5 vocabulary, 4.6 drift and 4.7
-operations. The flat numbering holds until those groups approve.
-
-## Unpublished sections
-
-Portability, Deployment and Acceptance are unpublished. A specification states what must be
-true. Deployment states how to make it true, which is a procedure and belongs to the build
-file and the SQL. Acceptance would restate this specification, because every invariant is
-atomic and passes or fails on its own, so the invariants are already the conformance criteria.
-
-Grounding and Failure Capture are unpublished. They state what an agent must do with Memory
-rather than what Memory is and guarantees, so they belong in AGENTS.md. The guarantees
-carried by the artifacts Memory ships are not yet addressed.
-
-## Temporal framing
-
-Use MUST NOT for an act that has never occurred. Use MUST with a removal verb for a state
-that already exists. Forbidding what is already published is temporally incorrect, because
-the obligation is to remove it rather than to refrain from writing it.
-
-# 1. Normative Language
-
-| # | Rule | Status | Invariant |
-| --- | --- | --- | --- |
-| 1.1 | MUST | Publish | Use normative keywords according to RFC 2119 and RFC 8174 |
-
-# 2. Scope
-
-| # | Rule | Status | Invariant |
-| --- | --- | --- | --- |
-| 2.1 | MUST | Publish | Limit this specification to Memory invariants |
-| 2.2 | MUST | Publish | Confirm conformance when every MUST is satisfied |
 
 # 3. Documentation
 
@@ -96,10 +54,9 @@ the obligation is to remove it rather than to refrain from writing it.
 | 3.8 | MUST | Publish | Unpublish Memory as a remembered summary |
 | 3.9 | SHOULD | Register | Save the query artifact that produces each documented statistic |
 | 3.10 | SHOULD | Publish | Update documentation with behavior changes in the same change |
-| 3.11 | MUST | Publish | Set a unique semver style address on every markdown element |
-| 3.12 | MAY | Publish | Use the exact heading and blockquote conventions of the Markdown Writing Rules |
-| 3.13 | MUST | Publish | Use [Sharpdown](https://github.com/andmigque/Sharpdown) to document code |
-| 3.14 | MUST | Publish | Use the term full text search, not keyword search |
+| 3.11 | MAY | Publish | Use the exact heading and blockquote conventions of the Markdown Writing Rules |
+| 3.12 | MUST | Publish | Use [Sharpdown](https://github.com/andmigque/Sharpdown) to document code |
+| 3.13 | MUST | Publish | Use the term full text search, not keyword search |
 
 # 4. Record
 
