@@ -82,10 +82,9 @@ Pending review. Carried unchanged from `memory.spec.md` section 2.
 | 4.6 | MUST | Auto populate time created in the datastore on first insert |
 | 4.7 | MUST | Auto populate time updated in the datastore |
 | 4.8 | MUST NOT | Time updated supplied by the caller |
-| 4.9 | MUST | Retrievable immediately after insert |
-| 4.10 | SHOULD | Full text search value derived from notes by the datastore |
-| 4.11 | SHOULD | Full text search value stored on the record |
-| 4.12 | MAY | Full text searchable immediately after insert |
+| 4.9 | SHOULD | Full text search value derived from notes by the datastore |
+| 4.10 | SHOULD | Full text search value stored on the record |
+| 4.11 | MAY | Full text searchable immediately after insert |
 
 # 5. Vocabulary
 
