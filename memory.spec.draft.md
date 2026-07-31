@@ -11,7 +11,7 @@ Every invariant reads as a sentence and opens with an approved PowerShell verb.
 Memory is committed to Supabase and Postgres. Naming either is not an implementation leak.
 Naming a credential, a flag, a file path, or a function is.
 
-Sections confirm one at a time. A section confirms only after review.
+Sections approve one at a time. A section approves only after review.
 
 ## Status vocabulary
 
@@ -19,25 +19,25 @@ Status uses verbs already in use. No new words are coined for it.
 
 | Status | Meaning |
 | --- | --- |
-| Confirm | Reviewed and agreed |
+| Approve | Reviewed and agreed |
 | Publish | In force and the behavior exists |
 | Register | Entered but the behavior does not exist yet |
 | Unpublish | Withdrawn |
 
-Sections carry Confirm once reviewed. Invariants carry Publish, Register or Unpublish. A
-confirmed section may hold registered invariants, because review and implementation are
+Sections carry Approve once reviewed. Invariants carry Publish, Register or Unpublish. An
+approved section may hold registered invariants, because review and implementation are
 different axes.
 
 ## Section status
 
 | Section | Title | Status |
 | --- | --- | --- |
-| 1 | Normative Language | Confirm |
-| 2 | Scope | Confirm |
-| 3 | Documentation | Confirm |
-| 4 | Record | Confirm |
-| 5 | Authentication | Confirm |
-| 6 | Authorization | Confirm |
+| 1 | Normative Language | Approve |
+| 2 | Scope | Approve |
+| 3 | Documentation | Approve |
+| 4 | Record | Approve |
+| 5 | Authentication | Approve |
+| 6 | Authorization | Approve |
 
 Boundaries dissolved. Every invariant it would have carried is authentication, authorization,
 or an edge function binding.
@@ -55,7 +55,7 @@ on the record. The vocabulary is the record. The capabilities are record operati
 
 Record will later be subdivided so its groups carry their own addresses, with 4.1 covering
 notes, 4.2 removal and status, 4.3 time, 4.4 derived values, 4.5 vocabulary, 4.6 drift and
-4.7 operations. The flat numbering holds until those groups confirm.
+4.7 operations. The flat numbering holds until those groups approve.
 
 Grounding and Failure Capture are not sections of this specification. They describe what an
 agent must do with Memory rather than what Memory is and guarantees, so they belong in
@@ -106,7 +106,7 @@ the obligation is to remove it rather than to refrain from writing it.
 | --- | --- | --- | --- |
 | 4.1 | MUST | Publish | Write a comprehensive account of the unique event that occurred in notes |
 | 4.2 | MUST | Publish | Block the ability to delete records |
-| 4.3 | MUST | Register | Build interfaces that use the active column as a soft delete in lieu of hard deletes |
+| 4.3 | MUST | Register | Use the active column as a soft delete in lieu of hard deletes |
 | 4.4 | MUST | Register | Lock time created after first insert |
 | 4.5 | MUST | Register | Update the time updated column on every distinct row mutation |
 | 4.6 | MUST | Register | Set the time created column automatically in the datastore on first insert |
@@ -117,8 +117,8 @@ the obligation is to remove it rather than to refrain from writing it.
 | 4.11 | MUST NOT | Publish | Write placeholder embeddings |
 | 4.12 | MUST | Publish | Register vocabulary words as sql Enums under `type/` |
 | 4.13 | MAY | Publish | Publish new work Enums as approved by Architect |
-| 4.14 | MUST | Register | Build a mechanism to detect drift |
-| 4.15 | MUST | Register | Build a mechanism to reconcile drift from production into the repository |
+| 4.14 | MUST | Register | Compare production against the repository |
+| 4.15 | MUST | Register | Sync the repository from production |
 | 4.16 | MUST | Publish | New one record per call |
 | 4.17 | MUST | Publish | Get records newest first |
 | 4.18 | MUST | Publish | Find records by meaning |
