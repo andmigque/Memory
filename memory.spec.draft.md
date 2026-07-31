@@ -11,7 +11,7 @@ Every invariant reads as a sentence and opens with an approved PowerShell verb.
 Memory is committed to Supabase and Postgres. Naming either is not an implementation leak.
 Naming a credential, a flag, a file path, or a function is.
 
-Sections are settled one at a time. A section is settled only after review.
+Sections publish one at a time. A section publishes only after review.
 
 ## Status vocabulary
 
@@ -25,14 +25,14 @@ Status uses verbs already in use. No new words are coined for it.
 
 ## Section status
 
-| Section | Title | State |
+| Section | Title | Status |
 | --- | --- | --- |
-| 1 | Normative Language | Settled |
-| 2 | Scope | Settled |
-| 3 | Documentation | Settled |
-| 4 | Record | Settled |
-| 5 | Authentication | Settled |
-| 6 | Authorization | Settled |
+| 1 | Normative Language | Publish |
+| 2 | Scope | Publish |
+| 3 | Documentation | Publish |
+| 4 | Record | Publish |
+| 5 | Authentication | Publish |
+| 6 | Authorization | Publish |
 
 Boundaries dissolved. Every invariant it would have carried is authentication, authorization,
 or an edge function binding.
@@ -50,7 +50,7 @@ on the record. The vocabulary is the record. The capabilities are record operati
 
 Record will later be subdivided so its groups carry their own addresses, with 4.1 covering
 notes, 4.2 removal and status, 4.3 time, 4.4 derived values, 4.5 vocabulary, 4.6 drift and
-4.7 operations. The flat numbering holds until those groups are settled.
+4.7 operations. The flat numbering holds until those groups publish.
 
 Grounding and Failure Capture are not sections of this specification. They describe what an
 agent must do with Memory rather than what Memory is and guarantees, so they belong in
