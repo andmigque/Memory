@@ -38,11 +38,11 @@ Documentation is the public interpretation layer for Memory. Because the product
 | 3.1 | MUST | Publish the product as a datastore that enables Continuous Agentic Improvement | Publish |
 | 3.2 | SHOULD | Publish support for at least 2 agents: Claude and Codex | Publish |
 | 3.3 | SHOULD | Publish record relationships as the semantic graph | Publish |
-| 3.4 | MUST | Unpublish the record store as graph storage | Publish |
-| 3.5 | MUST | Unpublish the record store as append only storage | Publish |
-| 3.6 | MUST | Unpublish Memory as built in agent memory | Publish |
-| 3.7 | MUST | Unpublish Memory as chat recollection | Publish |
-| 3.8 | MUST | Unpublish Memory as a remembered summary | Publish |
+| 3.4 | MUST | Unpublish the record store as graph storage | Remove |
+| 3.5 | MUST | Unpublish the record store as append only storage | Remove |
+| 3.6 | MUST | Unpublish Memory as built in agent memory | Remove |
+| 3.7 | MUST | Unpublish Memory as chat recollection | Remove |
+| 3.8 | MUST | Unpublish Memory as a remembered summary | Remove |
 | 3.9 | SHOULD | Save the query artifact that produces each documented statistic | Register |
 | 3.10 | SHOULD | Update documentation with behavior changes in the same change | Publish |
 | 3.11 | MAY | Use the exact heading and blockquote conventions of the Markdown Writing Rules | Publish |
