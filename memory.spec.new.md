@@ -24,10 +24,10 @@ The following are approved status verbs.
 
 | Status | Meaning |
 | --- | --- |
-| Approve | Reviewed and agreed |
-| Publish | In force and the behavior exists |
-| Register | Entered but the behavior does not exist yet |
-| Unpublish | Withdrawn |
+| Approve | Reviewed, agreed, and approved for deployment |
+| Publish | Deployed to production |
+| Register | Planned for a future deployment |
+| Unpublish | Remove where found |
 
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
