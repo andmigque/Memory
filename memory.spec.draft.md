@@ -8,6 +8,9 @@ restating requirements, so a rule changes in one place.
 
 Every invariant reads as a sentence and opens with an approved PowerShell verb.
 
+Memory is committed to Supabase and Postgres. Naming either is not an implementation leak.
+Naming a credential, a flag, a file path, or a function is.
+
 Sections are settled one at a time. A section is settled only after review.
 
 ## Status
@@ -18,21 +21,17 @@ Sections are settled one at a time. A section is settled only after review.
 | 2 | Scope | Pending review |
 | 3 | Documentation | Settled |
 | 4 | Record | Settled |
-| 5 | Vocabulary | Settled |
-| 6 | Authentication | Settled |
-| 7 | Authorization | Settled |
-| 8 | Capabilities | Pending |
-| 9 | Boundaries | Pending |
-| 10 | Portability | Pending |
-| 11 | Deployment | Pending |
-| 12 | Acceptance | Pending |
+| 5 | Authentication | Settled |
+| 6 | Authorization | Settled |
+| 7 | Capabilities | Pending |
+| 8 | Boundaries | Pending |
+| 9 | Portability | Pending |
+| 10 | Deployment | Pending |
+| 11 | Acceptance | Pending |
 
-Generated State was folded into Record. Its time invariants are 4.4 through 4.8 and its
-remaining content restated what the schema already enforces.
-
-Semantic Enrichment was folded into Record. Enrichment produces a value derived from notes
-and stored on the record, which is the same shape as the full text search value, so both
-live at 4.9 and 4.10.
+Generated State, Semantic Enrichment and Vocabulary were all folded into Record. Generated
+state is the record time columns. Enrichment produces a value derived from notes and stored
+on the record. The vocabulary is the record.
 
 Grounding and Failure Capture are not sections of this specification. They describe what an
 agent must do with Memory rather than what Memory is and guarantees, so they belong in
@@ -96,28 +95,22 @@ Pending review. Carried unchanged from `memory.spec.md` section 2.
 | 4.9 | SHOULD | Build the full text search value from notes in the datastore on the record |
 | 4.10 | SHOULD | Build embeddings asynchronously in the datastore on the record |
 | 4.11 | MUST NOT | Write placeholder embeddings |
+| 4.12 | MUST | Register vocabulary words as sql Enums under `type/` |
+| 4.13 | MAY | Publish new work Enums as approved by Architect |
+| 4.14 | MUST | Build a mechanism to detect drift |
+| 4.15 | MUST | Build a mechanism to reconcile drift from production into the repository |
 
-# 5. Vocabulary
-
-| # | Rule | Invariant |
-| --- | --- | --- |
-| 5.1 | MUST | Register vocabulary words as sql Enums under `type/` |
-| 5.2 | MAY | Add new work Enums as Architect |
-| 5.3 | MUST | Build a mechanism to detect drift |
-| 5.4 | MUST | Build a mechanism to reconcile drift from production into the repository |
-
-# 6. Authentication
+# 5. Authentication
 
 | # | Rule | Invariant |
 | --- | --- | --- |
-| 6.1 | MUST | Connect as a Supabase Auth user |
-| 6.2 | MUST | Send the publishable key |
-| 6.3 | MUST | Deny requests carrying no valid session |
+| 5.1 | MUST | Confirm caller authentication as a Supabase Auth user |
+| 5.2 | MUST | Deny requests carrying no valid session |
 
-# 7. Authorization
+# 6. Authorization
 
 | # | Rule | Invariant |
 | --- | --- | --- |
-| 7.1 | MUST | Grant create, read, and update operations |
-| 7.2 | MUST | Limit reads to active records |
-| 7.3 | MUST | Enable row level security |
+| 6.1 | MUST | Grant create, read, and update operations |
+| 6.2 | SHOULD | Limit reads to active records |
+| 6.3 | MUST | Enable row level security |
