@@ -68,6 +68,7 @@ Pending review. Carried unchanged from `memory.spec.md` section 2.
 | 3.12 | MUST | Every markdown element addressable by unique semver style address |
 | 3.13 | MAY | Exact heading and blockquote conventions of the Markdown Writing Rules |
 | 3.14 | MUST | Code documented using [Sharpdown](https://github.com/andmigque/Sharpdown) |
+| 3.15 | MUST | Use the term full text search, not keyword search |
 
 # 4. Record
 
@@ -81,6 +82,10 @@ Pending review. Carried unchanged from `memory.spec.md` section 2.
 | 4.6 | MUST | Auto populate time created in the datastore on first insert |
 | 4.7 | MUST | Auto populate time updated in the datastore |
 | 4.8 | MUST NOT | Time updated supplied by the caller |
+| 4.9 | MUST | Retrievable immediately after insert |
+| 4.10 | SHOULD | Full text search value derived from notes by the datastore |
+| 4.11 | SHOULD | Full text search value stored on the record |
+| 4.12 | MAY | Full text searchable immediately after insert |
 
 # 5. Vocabulary
 
