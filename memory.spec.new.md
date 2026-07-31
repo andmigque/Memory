@@ -18,7 +18,7 @@ Memory is expected to evolve across schemas, clients, and deployment mechanisms.
 
 # 2. Status
 
-The status model separates the lifecycle vocabulary from the rules that assign it. Each table has its own address so it can be referenced independently.
+The status model defines the lifecycle vocabulary used by every invariant.
 
 ## 2.1 Deployment Status Vocabulary
 
@@ -30,16 +30,6 @@ This table defines the lifecycle states available to an invariant.
 | Publish | Deployed to production |
 | Register | Planned for a future deployment |
 | Unpublish | Remove where found |
-
-## 2.2 Status Requirements
-
-This table governs how lifecycle states are assigned and how section approval relates to registered work.
-
-| # | Rule | Invariant | Status |
-| --- | --- | --- | --- |
-| 2.2.1 | MUST | Approve a section after review | Publish |
-| 2.2.2 | MUST | Set Approve, Publish, Register or Unpublish on each invariant | Publish |
-| 2.2.3 | MAY | Approve a section holding registered invariants | Publish |
 
 # 3. Documentation
 
