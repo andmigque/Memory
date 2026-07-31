@@ -6,6 +6,8 @@ until this draft is complete and replaces it.
 The rewrite states each invariant at exactly one address. Sections cite addresses rather than
 restating requirements, so a rule changes in one place.
 
+Every invariant reads as a sentence and opens with an approved PowerShell verb.
+
 Sections are settled one at a time. A section is settled only after review.
 
 ## Status
@@ -19,20 +21,29 @@ Sections are settled one at a time. A section is settled only after review.
 | 5 | Vocabulary | Settled |
 | 6 | Authentication | Settled |
 | 7 | Authorization | Settled |
-| 8 | Enrichment | Pending |
-| 9 | Capabilities | Pending |
-| 10 | Boundaries | Pending |
-| 11 | Portability | Pending |
-| 12 | Deployment | Pending |
-| 13 | Acceptance | Pending |
+| 8 | Capabilities | Pending |
+| 9 | Boundaries | Pending |
+| 10 | Portability | Pending |
+| 11 | Deployment | Pending |
+| 12 | Acceptance | Pending |
 
 Generated State was folded into Record. Its time invariants are 4.4 through 4.8 and its
 remaining content restated what the schema already enforces.
+
+Semantic Enrichment was folded into Record. Enrichment produces a value derived from notes
+and stored on the record, which is the same shape as the full text search value, so both
+live at 4.9 and 4.10.
 
 Grounding and Failure Capture are not sections of this specification. They describe what an
 agent must do with Memory rather than what Memory is and guarantees, so they belong in
 AGENTS.md. The product-side remainder, covering the artifacts Memory ships and the
 guarantees they carry, is still to be placed.
+
+## Temporal framing
+
+Use MUST NOT for an act that has never occurred. Use MUST with a removal verb for a state
+that already exists. Forbidding what is already published is temporally incorrect, because
+the obligation is to remove it rather than to refrain from writing it.
 
 # 1. Normative Language
 
@@ -54,44 +65,44 @@ Pending review. Carried unchanged from `memory.spec.md` section 2.
 
 | # | Rule | Invariant |
 | --- | --- | --- |
-| 3.1 | MUST | Product described as a datastore that enables Continuous Agentic Improvement |
-| 3.2 | SHOULD | At least 2 agents supported: Claude and Codex |
-| 3.3 | SHOULD | Record relationships described as the semantic graph |
-| 3.4 | MUST NOT | Record store described as graph storage |
-| 3.5 | MUST NOT | Record store described as append-only storage |
-| 3.6 | MUST NOT | Memory described as built-in agent memory |
-| 3.7 | MUST NOT | Memory described as chat recollection |
-| 3.8 | MUST NOT | Memory described as a remembered summary |
-| 3.9 | MUST | Unimplemented behavior marked as planned |
-| 3.10 | SHOULD | Statistics reproducible from a stored query artifact |
-| 3.11 | SHOULD | Behavior changes documented in the same change |
-| 3.12 | MUST | Every markdown element addressable by unique semver style address |
-| 3.13 | MAY | Exact heading and blockquote conventions of the Markdown Writing Rules |
-| 3.14 | MUST | Code documented using [Sharpdown](https://github.com/andmigque/Sharpdown) |
+| 3.1 | MUST | Publish the product as a datastore that enables Continuous Agentic Improvement |
+| 3.2 | SHOULD | Publish support for at least 2 agents: Claude and Codex |
+| 3.3 | SHOULD | Publish record relationships as the semantic graph |
+| 3.4 | MUST | Unpublish the record store as graph storage |
+| 3.5 | MUST | Unpublish the record store as append only storage |
+| 3.6 | MUST | Unpublish Memory as built in agent memory |
+| 3.7 | MUST | Unpublish Memory as chat recollection |
+| 3.8 | MUST | Unpublish Memory as a remembered summary |
+| 3.9 | MUST | Publish unimplemented behavior as planned |
+| 3.10 | SHOULD | Save the query artifact that produces each documented statistic |
+| 3.11 | SHOULD | Update documentation with behavior changes in the same change |
+| 3.12 | MUST | Set a unique semver style address on every markdown element |
+| 3.13 | MAY | Use the exact heading and blockquote conventions of the Markdown Writing Rules |
+| 3.14 | MUST | Use [Sharpdown](https://github.com/andmigque/Sharpdown) to document code |
 | 3.15 | MUST | Use the term full text search, not keyword search |
 
 # 4. Record
 
 | # | Rule | Invariant |
 | --- | --- | --- |
-| 4.1 | MUST | Notes contain a comprehensive account of the unique event that occurred |
-| 4.2 | MUST | Block ability to delete records |
+| 4.1 | MUST | Write a comprehensive account of the unique event that occurred in notes |
+| 4.2 | MUST | Block the ability to delete records |
 | 4.3 | MUST | Build interfaces that use the active column as a soft delete in lieu of hard deletes |
-| 4.4 | MUST | Time created is immutable |
+| 4.4 | MUST | Lock time created after first insert |
 | 4.5 | MUST | Update the time updated column on every distinct row mutation |
-| 4.6 | MUST | Auto populate time created in the datastore on first insert |
-| 4.7 | MUST | Auto populate time updated in the datastore |
-| 4.8 | MUST NOT | Time updated supplied by the caller |
-| 4.9 | SHOULD | Full text search value derived from notes by the datastore |
-| 4.10 | SHOULD | Full text search value stored on the record |
-| 4.11 | MAY | Full text searchable immediately after insert |
+| 4.6 | MUST | Set the time created column automatically in the datastore on first insert |
+| 4.7 | MUST | Set the time updated column automatically in the datastore |
+| 4.8 | MUST NOT | Receive a time updated value from the caller |
+| 4.9 | SHOULD | Build the full text search value from notes in the datastore on the record |
+| 4.10 | SHOULD | Build embeddings asynchronously in the datastore on the record |
+| 4.11 | MUST NOT | Write placeholder embeddings |
 
 # 5. Vocabulary
 
 | # | Rule | Invariant |
 | --- | --- | --- |
-| 5.1 | MUST | Vocabulary words are sql Enums under `type/` |
-| 5.2 | MAY | New work Enums added by Architect |
+| 5.1 | MUST | Register vocabulary words as sql Enums under `type/` |
+| 5.2 | MAY | Add new work Enums as Architect |
 | 5.3 | MUST | Build a mechanism to detect drift |
 | 5.4 | MUST | Build a mechanism to reconcile drift from production into the repository |
 
@@ -99,16 +110,14 @@ Pending review. Carried unchanged from `memory.spec.md` section 2.
 
 | # | Rule | Invariant |
 | --- | --- | --- |
-| 6.1 | MUST | Authenticate as a Supabase Auth user |
-| 6.2 | MUST | Present the publishable key |
-| 6.3 | MUST | Reject requests carrying no valid session |
+| 6.1 | MUST | Connect as a Supabase Auth user |
+| 6.2 | MUST | Send the publishable key |
+| 6.3 | MUST | Deny requests carrying no valid session |
 
 # 7. Authorization
 
 | # | Rule | Invariant |
 | --- | --- | --- |
-| 7.1 | MUST | Allow create, read, and update operations |
-| 7.2 | MUST | Return only active records to reads |
-| 7.3 | MUST | Enforce row level security |
-| 7.4 | MUST | Embeddings are generated by the datastore, never by the caller |
-| 7.5 | MUST | Embeddings generation uses an edge function to call an external model |
+| 7.1 | MUST | Grant create, read, and update operations |
+| 7.2 | MUST | Limit reads to active records |
+| 7.3 | MUST | Enable row level security |
