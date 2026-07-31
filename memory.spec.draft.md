@@ -33,15 +33,19 @@ Status uses verbs already in use. No new words are coined for it.
 | 4 | Record | Settled |
 | 5 | Authentication | Settled |
 | 6 | Authorization | Settled |
-| 7 | Capabilities | Pending |
-| 8 | Boundaries | Pending |
-| 9 | Portability | Pending |
-| 10 | Deployment | Pending |
-| 11 | Acceptance | Pending |
+| 7 | Boundaries | Pending |
+| 8 | Portability | Pending |
+| 9 | Deployment | Pending |
+| 10 | Acceptance | Pending |
 
-Generated State, Semantic Enrichment and Vocabulary were all folded into Record. Generated
+Generated State, Semantic Enrichment, Vocabulary and Capabilities were all folded into
+Record. Generated
 state is the record time columns. Enrichment produces a value derived from notes and stored
-on the record. The vocabulary is the record.
+on the record. The vocabulary is the record. The capabilities are record operations.
+
+Record will later be subdivided so its groups carry their own addresses, with 4.1 covering
+notes, 4.2 removal and status, 4.3 time, 4.4 derived values, 4.5 vocabulary, 4.6 drift and
+4.7 operations. The flat numbering holds until those groups are settled.
 
 Grounding and Failure Capture are not sections of this specification. They describe what an
 agent must do with Memory rather than what Memory is and guarantees, so they belong in
@@ -108,6 +112,11 @@ Pending review. Carried unchanged from `memory.spec.md` section 2.
 | 4.13 | MAY | Publish | Publish new work Enums as approved by Architect |
 | 4.14 | MUST | Register | Build a mechanism to detect drift |
 | 4.15 | MUST | Register | Build a mechanism to reconcile drift from production into the repository |
+| 4.16 | MUST | Publish | New one record per call |
+| 4.17 | MUST | Publish | Get records newest first |
+| 4.18 | MUST | Publish | Find records by meaning |
+| 4.19 | MUST | Publish | Merge full text and semantic ranking into one result |
+| 4.20 | MUST | Publish | Limit the number of records returned |
 
 # 5. Authentication
 
