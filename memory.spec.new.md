@@ -18,7 +18,7 @@ Memory is expected to evolve across schemas, clients, and deployment mechanisms.
 
 # 2. Status
 
-The status model separates the lifecycle vocabulary, the rules that assign it, and the current state of each section. Each table has its own address so it can be referenced independently.
+The status model separates the lifecycle vocabulary from the rules that assign it. Each table has its own address so it can be referenced independently.
 
 ## 2.1 Deployment Status Vocabulary
 
@@ -40,19 +40,6 @@ This table governs how lifecycle states are assigned and how section approval re
 | 2.2.1 | MUST | Approve a section after review | Publish |
 | 2.2.2 | MUST | Set Approve, Publish, Register or Unpublish on each invariant | Publish |
 | 2.2.3 | MAY | Approve a section holding registered invariants | Publish |
-
-## 2.3 Section Status
-
-This table records the current lifecycle status of each section without replacing the status of the invariants it contains.
-
-| Section | Title | Status |
-| --- | --- | --- |
-| 1 | Specification | Approve |
-| 2 | Status | Approve |
-| 3 | Documentation | Approve |
-| 4 | Record | Approve |
-| 5 | Authentication | Approve |
-| 6 | Authorization | Approve |
 
 # 3. Documentation
 
