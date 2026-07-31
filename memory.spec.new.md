@@ -28,7 +28,7 @@ This table defines the lifecycle states available to an invariant.
 | Approve | Reviewed, agreed, and approved for deployment |
 | Publish | Deployed to production |
 | Register | Planned for a future deployment |
-| Unpublish | Remove where found |
+| Remove | Remove where found |
 
 # 3. Documentation
 
