@@ -107,13 +107,13 @@ the obligation is to remove it rather than to refrain from writing it.
 | 4.1 | MUST | Publish | Write a comprehensive account of the unique event that occurred in notes |
 | 4.2 | MUST | Publish | Block the ability to delete records |
 | 4.3 | MUST | Register | Use the active column as a soft delete in lieu of hard deletes |
-| 4.4 | MUST | Register | Lock time created after first insert |
+| 4.4 | MUST | Register | Protect time created with immutability |
 | 4.5 | MUST | Register | Update the time updated column on every distinct row mutation |
 | 4.6 | MUST | Register | Set the time created column automatically in the datastore on first insert |
 | 4.7 | MUST | Register | Set the time updated column automatically in the datastore |
 | 4.8 | MUST NOT | Register | Receive a time updated value from the caller |
-| 4.9 | SHOULD | Publish | Build the full text search value from notes in the datastore on the record |
-| 4.10 | SHOULD | Publish | Build embeddings asynchronously in the datastore on the record |
+| 4.9 | SHOULD | Publish | ConvertTo the full text search value from notes in the datastore on the record |
+| 4.10 | SHOULD | Publish | ConvertTo embeddings asynchronously in the datastore on the record |
 | 4.11 | MUST NOT | Publish | Write placeholder embeddings |
 | 4.12 | MUST | Publish | Register vocabulary words as sql Enums under `type/` |
 | 4.13 | MAY | Publish | Publish new work Enums as approved by Architect |
