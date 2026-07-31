@@ -11,7 +11,7 @@ Memory is expected to evolve across schemas, clients, and deployment mechanisms.
 | 1.3 | MUST | Set one address on each invariant | Approve |
 | 1.4 | MUST | Use addresses in place of restating invariants | Approve |
 | 1.5 | MUST | Open each invariant with an approved PowerShell verb | Approve |
-| 1.6 | MUST | Set a unique semver style address on every markdown element | Approve |
+| 1.6 | SHOULD | Set a unique semver style address on every markdown element | Approve |
 | 1.7 | MUST | Use the names Supabase and Postgres | Approve |
 | 1.8 | MUST NOT | Use a credential, flag, file path, or function name | Approve |
 | 1.9 | MUST | Confirm conformance when every MUST is satisfied | Approve |
