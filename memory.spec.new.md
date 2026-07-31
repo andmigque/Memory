@@ -13,7 +13,6 @@ Memory is expected to evolve across schemas, clients, and deployment mechanisms.
 | 1.5 | MUST | Open each invariant with an approved PowerShell verb | Approve |
 | 1.6 | SHOULD | Set a unique semver style address on every markdown element | Approve |
 | 1.7 | MUST | Use the names Supabase and Postgres | Approve |
-| 1.9 | MUST | Confirm conformance when every MUST is satisfied | Approve |
 
 # 2. Status
 
