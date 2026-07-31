@@ -27,16 +27,21 @@ Status uses verbs already in use. No new words are coined for it.
 
 | Section | Title | State |
 | --- | --- | --- |
-| 1 | Normative Language | Pending review |
-| 2 | Scope | Pending review |
+| 1 | Normative Language | Settled |
+| 2 | Scope | Settled |
 | 3 | Documentation | Settled |
 | 4 | Record | Settled |
 | 5 | Authentication | Settled |
 | 6 | Authorization | Settled |
-| 7 | Boundaries | Pending |
-| 8 | Portability | Pending |
-| 9 | Deployment | Pending |
-| 10 | Acceptance | Pending |
+
+Boundaries dissolved. Every invariant it would have carried is authentication, authorization,
+or an edge function binding.
+
+Portability, Deployment and Acceptance are excluded. A specification states what must be
+true. Deployment states how to make it true, which is a procedure and belongs to the build
+file and the SQL. Acceptance would restate the document, because every invariant here is
+atomic and passes or fails on its own, so the invariants are already the conformance
+criteria.
 
 Generated State, Semantic Enrichment, Vocabulary and Capabilities were all folded into
 Record. Generated
@@ -60,19 +65,16 @@ the obligation is to remove it rather than to refrain from writing it.
 
 # 1. Normative Language
 
-Pending review. Carried unchanged from `memory.spec.md` section 1.
-
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
-| 1.1 | MUST | Publish | Normative keywords interpreted according to RFC 2119 and RFC 8174 |
+| 1.1 | MUST | Publish | Use normative keywords according to RFC 2119 and RFC 8174 |
 
 # 2. Scope
 
-Pending review. Carried unchanged from `memory.spec.md` section 2.
-
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
-| 2.1 | MUST | Publish | Requirements for Memory defined by this document |
+| 2.1 | MUST | Publish | Limit this document to the requirements for Memory |
+| 2.2 | MUST | Publish | Confirm conformance when every MUST is satisfied |
 
 # 3. Documentation
 
