@@ -1,10 +1,10 @@
-# Memory Requirements Draft
+# Memory Specification
 
-Working draft of the specification rewrite. `memory.spec.md` remains the source of truth
-until this draft is complete and replaces it.
+Draft of the specification rewrite. `memory.spec.md` remains the source of truth until this
+draft approves and replaces it.
 
 The rewrite states each invariant at exactly one address. Sections cite addresses rather than
-restating requirements, so a rule changes in one place.
+restating invariants, so an invariant changes in one place.
 
 Every invariant reads as a sentence and opens with an approved PowerShell verb.
 
@@ -39,28 +39,29 @@ different axes.
 | 5 | Authentication | Approve |
 | 6 | Authorization | Approve |
 
-Boundaries dissolved. Every invariant it would have carried is authentication, authorization,
-or an edge function binding.
+## Merged sections
 
-Portability, Deployment and Acceptance are excluded. A specification states what must be
+Generated State, Semantic Enrichment, Vocabulary and Capabilities merged into Record.
+Generated state is the record time columns. Enrichment converts notes to a value stored on
+the record. The vocabulary is the record. The capabilities are record operations.
+
+Boundaries merged into Authentication and Authorization. Every invariant it would have
+carried is authentication, authorization, or an edge function binding.
+
+Record will later subdivide so its groups carry their own addresses, with 4.1 covering notes,
+4.2 removal and status, 4.3 time, 4.4 derived values, 4.5 vocabulary, 4.6 drift and 4.7
+operations. The flat numbering holds until those groups approve.
+
+## Unpublished sections
+
+Portability, Deployment and Acceptance are unpublished. A specification states what must be
 true. Deployment states how to make it true, which is a procedure and belongs to the build
-file and the SQL. Acceptance would restate the document, because every invariant here is
-atomic and passes or fails on its own, so the invariants are already the conformance
-criteria.
+file and the SQL. Acceptance would restate this specification, because every invariant is
+atomic and passes or fails on its own, so the invariants are already the conformance criteria.
 
-Generated State, Semantic Enrichment, Vocabulary and Capabilities were all folded into
-Record. Generated
-state is the record time columns. Enrichment produces a value derived from notes and stored
-on the record. The vocabulary is the record. The capabilities are record operations.
-
-Record will later be subdivided so its groups carry their own addresses, with 4.1 covering
-notes, 4.2 removal and status, 4.3 time, 4.4 derived values, 4.5 vocabulary, 4.6 drift and
-4.7 operations. The flat numbering holds until those groups approve.
-
-Grounding and Failure Capture are not sections of this specification. They describe what an
-agent must do with Memory rather than what Memory is and guarantees, so they belong in
-AGENTS.md. The product-side remainder, covering the artifacts Memory ships and the
-guarantees they carry, is still to be placed.
+Grounding and Failure Capture are unpublished. They state what an agent must do with Memory
+rather than what Memory is and guarantees, so they belong in AGENTS.md. The guarantees
+carried by the artifacts Memory ships are not yet addressed.
 
 ## Temporal framing
 
@@ -78,7 +79,7 @@ the obligation is to remove it rather than to refrain from writing it.
 
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
-| 2.1 | MUST | Publish | Limit this document to the requirements for Memory |
+| 2.1 | MUST | Publish | Limit this specification to Memory invariants |
 | 2.2 | MUST | Publish | Confirm conformance when every MUST is satisfied |
 
 # 3. Documentation
