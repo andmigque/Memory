@@ -6,15 +6,15 @@ Memory is expected to evolve across schemas, clients, and deployment mechanisms.
 
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
-| 1.1 | MUST | Publish | Use normative keywords according to RFC 2119 and RFC 8174 |
-| 1.2 | MUST | Publish | Limit this specification to Memory invariants |
-| 1.3 | MUST | Publish | State each invariant at one address |
-| 1.4 | MUST | Publish | Cite addresses in place of restating invariants |
-| 1.5 | MUST | Publish | Open each invariant with an approved PowerShell verb |
-| 1.6 | MUST | Publish | Set a unique semver style address on every markdown element |
-| 1.7 | MUST | Publish | Name Supabase and Postgres |
-| 1.8 | MUST NOT | Publish | Name a credential, flag, file path, or function |
-| 1.9 | MUST | Publish | Confirm conformance when every MUST is satisfied |
+| 1.1 | MUST | Approve | Use normative keywords according to RFC 2119 and RFC 8174 |
+| 1.2 | MUST | Approve | Limit this specification to Memory invariants |
+| 1.3 | MUST | Approve | State each invariant at one address |
+| 1.4 | MUST | Approve | Cite addresses in place of restating invariants |
+| 1.5 | MUST | Approve | Open each invariant with an approved PowerShell verb |
+| 1.6 | MUST | Approve | Set a unique semver style address on every markdown element |
+| 1.7 | MUST | Approve | Name Supabase and Postgres |
+| 1.8 | MUST NOT | Approve | Name a credential, flag, file path, or function |
+| 1.9 | MUST | Approve | Confirm conformance when every MUST is satisfied |
 
 # 2. Status
 
@@ -32,7 +32,7 @@ The following are approved status verbs.
 | # | Rule | Status | Invariant |
 | --- | --- | --- | --- |
 | 2.1 | MUST | Publish | Approve a section after review |
-| 2.2 | MUST | Publish | Set Publish, Register or Unpublish on each invariant |
+| 2.2 | MUST | Publish | Set Approve, Publish, Register or Unpublish on each invariant |
 | 2.3 | MAY | Publish | Approve a section holding registered invariants |
 
 | Section | Title | Status |
