@@ -11,7 +11,7 @@ Every invariant reads as a sentence and opens with an approved PowerShell verb.
 Memory is committed to Supabase and Postgres. Naming either is not an implementation leak.
 Naming a credential, a flag, a file path, or a function is.
 
-Sections publish one at a time. A section publishes only after review.
+Sections confirm one at a time. A section confirms only after review.
 
 ## Status vocabulary
 
@@ -19,20 +19,25 @@ Status uses verbs already in use. No new words are coined for it.
 
 | Status | Meaning |
 | --- | --- |
-| Publish | Requirement is in force and the behavior exists |
-| Register | Requirement is entered but the behavior does not exist yet |
-| Unpublish | Requirement was withdrawn |
+| Confirm | Reviewed and agreed |
+| Publish | In force and the behavior exists |
+| Register | Entered but the behavior does not exist yet |
+| Unpublish | Withdrawn |
+
+Sections carry Confirm once reviewed. Invariants carry Publish, Register or Unpublish. A
+confirmed section may hold registered invariants, because review and implementation are
+different axes.
 
 ## Section status
 
 | Section | Title | Status |
 | --- | --- | --- |
-| 1 | Normative Language | Publish |
-| 2 | Scope | Publish |
-| 3 | Documentation | Publish |
-| 4 | Record | Publish |
-| 5 | Authentication | Publish |
-| 6 | Authorization | Publish |
+| 1 | Normative Language | Confirm |
+| 2 | Scope | Confirm |
+| 3 | Documentation | Confirm |
+| 4 | Record | Confirm |
+| 5 | Authentication | Confirm |
+| 6 | Authorization | Confirm |
 
 Boundaries dissolved. Every invariant it would have carried is authentication, authorization,
 or an edge function binding.
@@ -50,7 +55,7 @@ on the record. The vocabulary is the record. The capabilities are record operati
 
 Record will later be subdivided so its groups carry their own addresses, with 4.1 covering
 notes, 4.2 removal and status, 4.3 time, 4.4 derived values, 4.5 vocabulary, 4.6 drift and
-4.7 operations. The flat numbering holds until those groups publish.
+4.7 operations. The flat numbering holds until those groups confirm.
 
 Grounding and Failure Capture are not sections of this specification. They describe what an
 agent must do with Memory rather than what Memory is and guarantees, so they belong in
